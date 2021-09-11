@@ -1,16 +1,23 @@
 !--  ****************************** HTML ************************************-->
 
 <template>
-    <div>
+    <div class="nav">
         <table>
           <caption> Recent Blocks </caption>
           <tbody>
             <tr>
-              <td> <router-link to="/" > 0xdq1212121XXXXXXXXXXXXXX <br/> 12345 </router-link> </td>
+              
+              <td> <router-link to="/block"> 0xdq1212121XXXXXXXXXXXXXX <br/> 12345 </router-link> </td>
               <td> <router-link to="" > 0xXXXXXXXXXXXXXXXXXXXXX <br/> 42345 </router-link> </td>
+             
+              
+           
             </tr>
           </tbody>
+          
       </table>
+
+      
 
     </div>
 </template>
@@ -30,10 +37,23 @@
 
 <style scoped>
 
+.nav a {
+  font-weight: bold;
+  font-size: 25px;
+  color: #000000;
+  display: inline-block;
+  padding: 20px;
+}
+
+.nav a.router-link-exact-active {
+  color: #FFFFFF;
+}
+
 table {
   width: 100%;
   border-spacing: 50px 3px;
-   
+  border-radius: 50px 50px 50px 50px;
+    
 }
 
 table caption {
@@ -56,7 +76,7 @@ table td {
   text-align: center;
   text-decoration: underline;
   
+   
 }
-
 
 </style>

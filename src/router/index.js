@@ -4,6 +4,7 @@ import Home from '../pages/Home.vue'
 import Xchain from '../pages/X-chain.vue'
 import Pchain from '../pages/P-chain.vue'
 import Cchain from '../pages/C-chain.vue'
+import Block from '../pages/Block.vue'
 
 Vue.use(VueRouter)
 
@@ -30,7 +31,15 @@ const routes = [
     name: 'P-chain',
     component: Pchain 
 
+  },
+  {
+    path: '/block',
+    name: 'Block',
+    component: Block
+
   }
+
+
 ]
 
 const router = new VueRouter({

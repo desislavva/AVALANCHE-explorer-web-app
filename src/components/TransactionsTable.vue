@@ -4,21 +4,20 @@
     <div>
       
         <table>
-          <caption> Recent Transactions </caption>
           <thead>
               <tr>
-              <th scope="col"> ID </th>
-              <th scope="col"> FROM </th>
-              <th scope="col"> TO </th>
-              <th scope="col"> CHAIN </th>
+              <th> HASH </th>
+              <th> FROM </th>
+              <th> TO </th>
+              <th> CHAIN </th>
               </tr>
           </thead>
           <tbody>
             <tr>
-              <td> ID </td>
-              <td> FROM </td>
-              <td> TO </td>
-              <td> CHAIN </td>
+              <td><router-link to="/transaction"> {{hash}} </router-link></td>
+              <td><router-link to="/address"> {{from}} </router-link></td>
+              <td><router-link to="/address"> {{to}} </router-link></td>
+              <td id="chain"> {{chain}} </td>
           </tr>
         </tbody>
       </table>
@@ -33,6 +32,16 @@
     export default {
         components: {
             
+        },
+        data (){
+          return {
+            hash: '1',
+            from: '0x99999999',
+            to: '099999',
+            chain: 'X'
+
+          }
+
         }
     }
 </script>
@@ -51,12 +60,7 @@ table {
    
 }
 
-table caption {
-  font-size: 40px;
-  margin: .5em 0 .75em;
-  text-align: left;
-  color: #FFFFFF;
-}
+
 
 table tr {
   background: rgba(255,255,255,0.51);
@@ -81,6 +85,17 @@ table th {
   text-transform: uppercase;
 }
 
+a {
+  color: black;
+  font-weight: bold;
+}
+
+#chain {
+
+  font-size: 30px;
+  font-weight: bold;
+  background-color: rgba(255, 0, 0, 0.30);
+}
 
 
 </style>
