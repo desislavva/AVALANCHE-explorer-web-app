@@ -18,14 +18,14 @@
 !--  ****************************** SCRIPT ************************************-->
 
 <script>
-    export default {
-        data () {
+export default {
+  data () {
     return {
       hashOrNumber: '',
       error: ''
     }
   }
-    }
+}
 </script>
 
 

@@ -1,13 +1,10 @@
 <template>
-    
   <div id="nav">
          <router-link to="/"> Home </router-link> |
          <router-link to="/c-chain"> C-Chain </router-link> |
          <router-link to="/p-chain"> P-Chain </router-link> |
          <router-link to="/x-chain"> X-chain </router-link>     
-  </div>
-  
-    
+  </div> 
 </template>
 
 
@@ -37,6 +34,7 @@
   color: #000000;
   display: inline-block;
   padding: 20px;
+  text-decoration: none;
 }
 
 #nav a.router-link-exact-active {

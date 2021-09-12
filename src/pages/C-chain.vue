@@ -2,31 +2,23 @@
 
 <template>
   <div class="back">
-  
     <Search />
     <BlocksTable />
 
     <p> Recent Transactions </p>
 
     <TransactionsTable />
-
-
   </div>
 </template>
-
 
 !--  ****************************** SCRIPT ************************************-->
 
 <script>
-
 import Search from '../components/SearchBar.vue'
 import BlocksTable from '../components/BlocksTable.vue'
 import TransactionsTable from '../components/TransactionsTable.vue'
 
-
-
 export default {
-  
   components: {
       BlocksTable,
       TransactionsTable,
@@ -36,18 +28,11 @@ export default {
      
     }
   }
-  
-
 </script>
-
-
 
 !--  ****************************** CSS ************************************-->
 
-
 <style scoped>
-
-
 .back {
   position: relative;
   min-height: 100%;
@@ -66,6 +51,4 @@ p {
   margin-top: 0;
   padding-top: 100px;
 }
-
-
 </style>

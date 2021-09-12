@@ -33,13 +33,11 @@ const routes = [
 
   },
   {
-    path: '/block',
+    path: '/block/:hash',
     name: 'Block',
     component: Block
 
   }
-
-
 ]
 
 const router = new VueRouter({

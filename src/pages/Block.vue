@@ -1,45 +1,32 @@
 <--  ****************************** HTML ************************************-->
 <template>
-    
-    <div class="back">
-
-       <Details />
-
-      <p> Block Transactions </p>
-
-        <Transactions />
-
-
-
-    </div>
-    
+  <div class="back">
+    <Details :hash="hash"/>
+    <p> Block Transactions </p>
+    <Transactions />
+  </div>
 </template>
-
-
 <--  ****************************** SCRIPT ************************************-->
 
 <script>
-
 import Transactions from '../components/TransactionsTable.vue'
 import Details from '../components/BlockDetails.vue'
-
-
-
-    export default {
-
-      components: {
-            Transactions, 
-            Details
-            
-      }
+export default {
+  data () {
+    return {
+      hash: this.$route.params.hash
     }
+  },
+  components: {
+    Transactions, 
+    Details   
+  }
+}
 </script>
-
 
 <--  ****************************** CSS ************************************-->
 
 <style scoped>
-
 p {
   font-size: 40px;
   text-align: left;
@@ -47,7 +34,6 @@ p {
   margin-top: 0;
   padding-top: 100px;
 }
-
 
 .back {
   position: relative;
@@ -58,6 +44,5 @@ p {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale; 
 }
-
 
 </style>
