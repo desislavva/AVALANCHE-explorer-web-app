@@ -26,6 +26,8 @@
 #nav {
   background-color: #C61B1B;
   text-align: center;
+  border-radius: 30px 30px 30px 30px; 
+  margin-bottom: 20px;
 }
 
 #nav a {

@@ -37,4 +37,14 @@ import Footer from '../components/TheFooter.vue'
   overflow-x: hidden;
 }
 
+p {
+  font-size: 40px;
+  margin: .5em 0 .75em;
+  padding-top: 30px;
+  padding-left: 45px;
+  text-align: left;
+  color: #ffffff;
+  font-weight: bold;
+}
+
 </style>

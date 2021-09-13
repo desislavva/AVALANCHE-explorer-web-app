@@ -5,10 +5,12 @@
         <table>
           <caption> Recent Blocks </caption>
           <tbody>
+
             <tr v-for="(blocks, index) in chunkedBlocks" :key="index">
-              <td v-for="block in blocks" :key="block.id"> 
+              <td v-for="block in blocks" :key="block.id"> <img src="https://icon-library.com/images/cube-thin-512_10612.png" id="block">
                 <router-link :to="{ name: 'Block', params: { hash: block.hash } }"> {{ block.hash }} <br/> {{ parseInt(block.number) }} </router-link> 
               </td>
+
             </tr>
           </tbody>
       </table>
@@ -65,7 +67,7 @@ export default {
 table {
   width: 100%;
   border-spacing: 50px 3px;
-  border-radius: 50px 50px 50px 50px;
+  
     
 }
 
@@ -75,12 +77,13 @@ table caption {
   padding-top: 30px;
   padding-left: 45px;
   text-align: left;
-  color: #070707;
+  color: #ffffff;
   font-weight: bold;
 }
 
 table tr {
   background: rgba(255,255,255,0.51);
+ 
   
 }
 
@@ -90,4 +93,8 @@ table td {
   text-decoration: underline;
 }
 
+#block {
+  height: 80px;
+}
+  
 </style>

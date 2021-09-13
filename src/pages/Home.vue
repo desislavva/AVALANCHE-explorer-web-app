@@ -3,11 +3,17 @@
 <template>
   <div class="backp">
 
-    <p> Recent Transactions </p>
+    <NetworkActivity />
 
-      <Table />
+    <p> Recent Transactions  </p>
 
-      <Footer />
+    <div class="search">
+      <Search />
+    </div>
+
+    <Table />
+
+    <Footer />
 
   </div>  
 </template>
@@ -18,11 +24,16 @@
 <script>
 
 import Table from '../components/TransactionsTable.vue'
+import Search from '../components/SearchBar.vue'
+import NetworkActivity from '../components/NetworkActivity.vue'
 import HomeS from '@/services/Home'
 
 export default {
     components: {
-      Table
+      Table,
+      Search,
+      NetworkActivity,
+
       
   },
     data () {
@@ -59,6 +70,10 @@ export default {
 
 <style scoped>
 
+.search {
+
+  text-align: center;
+}
 
 .backp {
   position: relative;
@@ -66,6 +81,7 @@ export default {
   height: 1000px;
   background-image: url(https://coinjournal.net/wp-content/uploads/imagecache/2021/08/1629291824161-542c54b4-f0f2-49d4-a0d3-67200ce11548-smartcrop-725x375.webp);
   background-size: contain;
+  padding-top: 30px;
   
 }
 
@@ -73,8 +89,8 @@ p {
   font-size: 40px;
   text-align: left;
   color: #FFFFFF;
-  margin-top: 0;
   padding-top: 100px;
 }
+
 
 </style>

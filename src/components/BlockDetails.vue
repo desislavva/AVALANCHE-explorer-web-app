@@ -2,7 +2,10 @@
 
 <template>
  <div class="info">
-          <h3> Hash: <label> {{ getBlockInfo.hash }} </label> </h3>
+
+
+          <h1> {{ getBlockInfo.hash }} </h1>
+
           
           <h3> Number: <label> {{ parseInt(getBlockInfo.number) }} </label> </h3>
           
@@ -56,6 +59,7 @@ export default {
   width: 700px;
   padding: 40px;
   border-radius: 50px 50px 50px 50px; 
+  text-align: center;
 }
 
 h3 {
