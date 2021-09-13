@@ -5,42 +5,46 @@
         <table>
           <caption> Recent Blocks </caption>
           <tbody>
-            <tr>
-              
-              <td> 
 
-                <img src="https://icon-library.com/images/cube-thin-512_10612.png" id="block">
-                <router-link to="/block"> 0xdq1212121XXXXXXXXXXXXXX <br/> 12345 </router-link> 
-              
+            <tr v-for="(blocks, index) in chunkedBlocks" :key="index">
+              <td v-for="block in blocks" :key="block.id"> <img src="https://icon-library.com/images/cube-thin-512_10612.png" id="block">
+                <router-link :to="{ name: 'Block', params: { hash: block.hash } }"> {{ block.hash }} <br/> {{ parseInt(block.number) }} </router-link> 
               </td>
-              <td> 
-                
-                <img src="https://icon-library.com/images/cube-thin-512_10612.png" id="block">
-                <router-link to="" > 0xXXXXXXXXXXXXXXXXXXXXX <br/> 42345 </router-link> 
-                
-              </td>
-             
-              
-           
+
             </tr>
           </tbody>
-          
       </table>
-
-      
-
     </div>
 </template>
 
 !--  ****************************** SCRIPT ************************************-->
 
 <script>
+import { mapGetters, mapActions } from 'vuex'
 
-    export default {
-        components: {
-            
-        }
+export default {
+  data() {
+    return {
+      setIntervalId: null
     }
+  },
+  methods: {
+    ...mapActions(['fetchBlocks'])
+  },
+  computed: {
+    ...mapGetters(['blocksList', 'chunkedBlocks'])
+  },
+  created () {
+    this.fetchBlocks();
+    this.setIntervalId = setInterval(() => {
+      this.fetchBlocks();
+    }, 1000);
+  },
+  beforeDestroy() {
+    clearInterval(this.setIntervalId)
+  }
+}
+
 </script>
 
 <--  ****************************** CSS ************************************-->
@@ -49,10 +53,11 @@
 
 .nav a {
   font-weight: bold;
-  font-size: 25px;
+  font-size: 17px;
   color: #000000;
   display: inline-block;
   padding: 20px;
+  text-decoration: none;
 }
 
 .nav a.router-link-exact-active {

@@ -2,7 +2,6 @@
 
 <template>
   <div class="back">
-  
     <Search />
     <BlocksTable />
 
@@ -14,23 +13,19 @@
 
     <UnacceptedTransactionsTable />
 
+
   </div>
 </template>
-
 
 !--  ****************************** SCRIPT ************************************-->
 
 <script>
-
 import Search from '../components/SearchBar.vue'
 import BlocksTable from '../components/BlocksTable.vue'
 import TransactionsTable from '../components/TransactionsTable.vue'
 import UnacceptedTransactionsTable from '../components/TransactionsTable.vue'
 
-
-
 export default {
-  
   components: {
       BlocksTable,
       TransactionsTable,
@@ -41,18 +36,11 @@ export default {
      
     }
   }
-  
-
 </script>
-
-
 
 !--  ****************************** CSS ************************************-->
 
-
 <style scoped>
-
-
 .back {
   position: relative;
   min-height: 100%;
@@ -70,3 +58,4 @@ export default {
 
 
 </style>
+

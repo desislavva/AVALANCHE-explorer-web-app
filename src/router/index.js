@@ -35,7 +35,7 @@ const routes = [
 
   },
   {
-    path: '/block',
+    path: '/block/:hash',
     name: 'Block',
     component: Block
 
@@ -52,8 +52,6 @@ const routes = [
     component: Address
 
   }
-
-
 ]
 
 const router = new VueRouter({
