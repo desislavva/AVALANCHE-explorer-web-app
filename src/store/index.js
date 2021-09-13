@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import Vuex from 'vuex'
+import Vuex, { Store } from 'vuex'
 import BlocksModule from './modules/blocks'
 
 Vue.use(Vuex)

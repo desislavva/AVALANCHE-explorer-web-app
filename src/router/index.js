@@ -38,16 +38,15 @@ const routes = [
     path: '/block/:hash',
     name: 'Block',
     component: Block
-
   },
   {
-    path: '/transaction',
+    path: '/transaction/:transactionHash',
     name: 'Transaction',
     component: Transaction
 
   },
   {
-    path: '/address',
+    path: '/address/:addressHash',
     name: 'Address',
     component: Address
 

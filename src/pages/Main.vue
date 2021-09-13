@@ -35,6 +35,7 @@ import Footer from '../components/TheFooter.vue'
   -moz-osx-font-smoothing: grayscale;
   width: 100%;
   overflow-x: hidden;
+  overflow-y: hidden;
 }
 
 p {

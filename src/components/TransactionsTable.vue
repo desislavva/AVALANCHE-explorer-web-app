@@ -11,10 +11,10 @@
               <th> CHAIN </th>
               </tr>
           </thead>
-          <tbody>
+          <tbody v-if="dataRouteType == 'C'">
             <tr v-for="(transaction, index) in getTransactions" :key="index">
               <td> <img src="https://icon-library.com/images/transactions-icon/transactions-icon-5.jpg" id="transaction"></td>
-              <td><router-link to="/transaction"> {{ transaction.hash }} </router-link></td>
+              <td><router-link :to="{ name: 'Transaction', params: { transactionHash: transaction.hash } }"> {{ transaction.hash }} </router-link></td>
               <td><router-link to="/address"> {{ transaction.from }} </router-link></td>
               <td><router-link to="/address"> {{ transaction.to }} </router-link></td>
               <td id="chain"> {{chain}} </td>
@@ -32,22 +32,32 @@ import { mapGetters, mapActions } from 'vuex'
 export default {
   data() {
     return {
-      chain: 'NULL'
+      chain: 'NULL',
+      dataRouteType: 'NULL'
     }
   },
   props: {
-    hash: String
+    hash: String,
+    RouteType: String
   },
   methods: {
-    ...mapActions(['fetchTransactionsByBlockHash'])
+    setRouteType() {
+      console.log("Route type in setRouteType: " + this.dataRouteType)
+      this.dataRouteType = this.RouteType
+    }
   },
   computed: {
     ...mapGetters(['getTransactions'])
   },
   created() {
-    if (this.$route.name === 'Block') {
-      this.fetchTransactionsByBlockHash(this.hash)
-    }    
+    if (this.RouteType == 'C') {
+      this.setRouteType()
+      console.log("Route type in created: " + this.dataRouteType)
+    }
+  },
+  beforeDestroy() {
+    console.log("Route type in beforeDestroy: " + this.dataRouteType)
+    this.dataRouteType = 'NULL'
   }
 }
 </script>
@@ -59,10 +69,10 @@ export default {
 table {
   border: 1px solid #ccc;
   border-collapse: collapse;
-  margin-bottom: 70px;
-  padding: 20px;
-  width: 100%;
-  table-layout: fixed;
+  margin-bottom: 20px;
+  padding: 50px;
+  width: 1000px;
+  
 }
 
 table tr {
@@ -73,6 +83,12 @@ table tr {
 table td {
   padding: .625em;
   text-align: center;
+  white-space: nowrap;
+text-overflow:ellipsis;
+overflow: hidden;
+max-width:1px;
+  
+  
 }
 
 table th {
@@ -94,7 +110,7 @@ a {
 }
 
 #chain {
-  font-size: 30px;
+  font-size: 20px;
   font-weight: bold;
   background-color: rgba(255, 0, 0, 0.30);
 }

@@ -1,47 +1,52 @@
 <--  ****************************** HTML ************************************-->
 <template>
-   
-<div class="info">
-          <h1> {{hash}} </h1>
-          
-          <h3> Accepted: <label> {{accepted}} </label> </h3>
-          
-          <h3> Value: <label> {{value}} </label> </h3>
-          
-          <h3> Status: <label> {{status}}  </label> </h3>
-          
-          <h3> From: <label><router-link to="/address"> {{from}} </router-link> </label> </h3>
-          
-          <h3> To: <label><router-link to="/address"> {{to}} </router-link></label> </h3>
-          
-          <h3> Block: <label> {{block}} </label> </h3>
-
-          <h3> Blockchain: <label> {{blockchain}} </label> </h3>
-        </div>
+  <div class="info">
+    <h3> {{ getTransactionInfo.hash }} </h3>
     
-</template>
-   
+    <h3> Value: <label> {{ findValueInAVAX() }} AVAX</label> </h3>
+    
+    <h3> From: <label><router-link to="/address"> {{ getTransactionInfo.from }} </router-link> </label> </h3>
+    
+    <h3> To: <label><router-link to="/address"> {{ getTransactionInfo.to }} </router-link></label> </h3>
+    
+    <h3> Block: <label> {{ getTransactionInfo.blockHash }} </label> </h3>
 
+    <h3> Blockchain: <label> {{ findBlockchain() }} </label> </h3>
+  </div> 
+</template>
 
 <--  ****************************** SCRIPT ************************************-->
 
 <script>
-    export default {
-        data () {
-            return {
-                  hash: '0x00000000000000000',
-                  accepted: 'wqwqwqw',
-                  value: '12.2121.2121',
-                  status: 'Confirmed',
-                  from: '0x11111111111111111',
-                  to: '2xdddd00000000000',
-                  block: '2234',
-                  blockchain: 'C'
-            }
-        }
-    }
-</script>
+import { mapGetters, mapActions } from 'vuex'
+const web3 = require('web3-utils')
 
+export default {
+  data () {
+    return {
+    }
+  },
+  props: {
+    transactionHash: String
+  },
+  methods: {
+    findBlockchain() {
+      if (this.getTransactionInfo.hash.slice(0, 2) == '0x') {
+        return 'C'
+      }
+    },
+    findValueInAVAX() {
+      return web3.fromWei(`${this.getTransactionInfo.value}`, 'ether')
+    }
+  },
+  computed: {
+    ...mapGetters(['getTransactionInfo'])
+  },
+  created() {
+    
+  }
+}
+</script>
 
 <--  ****************************** CSS ************************************-->
 

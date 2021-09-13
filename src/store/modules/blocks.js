@@ -3,12 +3,19 @@ import axios from 'axios'
 const chunk = require('chunk');
 
 const state = {
+    loader: {
+        isLoading: false,
+        fullPage: true
+    },
     blocks: [],
     blockInfo: Object,
-    transactions: []
+    transactions: [],
+    transactionInfo: Object
 }
 
 const getters = {
+    getLoader: state => state.loader,
+
     blocksList: state => state.blocks,
 
     chunkedBlocks: (state) => {
@@ -17,7 +24,9 @@ const getters = {
 
     getBlockInfo: state => state.blockInfo,
 
-    getTransactions: state => state.transactions
+    getTransactions: state => state.transactions,
+
+    getTransactionInfo: state => state.transactionInfo
 }
 
 const actions = {
@@ -36,15 +45,27 @@ const actions = {
             })
     },
     fetchTransactionsByBlockHash({ commit }, hashPayload) {
-        axios.get(`http://localhost:4444/blocks/hash/${hashPayload}`)
+        setTimeout(() => {
+            axios.get(`http://localhost:4444/blocks/hash/${hashPayload}`)
             .then(response => {
                 console.log(response.data.result.transactions);
                 commit('setTransactions', response.data.result.transactions)
             })
+        }, 1000);
+    },
+    fetchTransactionInfoByHash({ commit }, hashPayload) {
+        return axios.get(`http://localhost:4444/transactions/hash/${hashPayload}`)
+        .then(response => {
+            console.log(response.data.result);
+            commit('setTransactionInfo', response.data.result)
+        })
     }
 }
 
 const mutations = {
+    setLoaderState(state, propState) {
+        state.loader.isLoading = propState
+    },
     setStateBlocks (state, blocks) {
         if (!state.blocks.some(e => e.number === blocks.number)) {
             state.blocks.unshift(blocks)
@@ -55,6 +76,9 @@ const mutations = {
     },
     setTransactions (state, transactions) {
         state.transactions = transactions
+    },
+    setTransactionInfo (state, transaction) {
+        state.transactionInfo = transaction
     }
 }
 

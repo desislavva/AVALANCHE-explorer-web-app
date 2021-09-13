@@ -1,25 +1,47 @@
 <--  ****************************** HTML ************************************-->
 <template>
     <div class="back">
-        <Details />
-
+        <loading :active.sync="getLoader.isLoading"
+                 :is-full-page="getLoader.fullPage"/>
+        <Details v-if="getTransactionInfo.hash" :transactionHash="transactionHash"/>
     </div>
 </template>
 
-
 <--  ****************************** SCRIPT ************************************-->
-
 <script>
+import { mapGetters, mapActions, mapMutations } from 'vuex'
 
 import Details from '../components/TransactionDetails.vue'
 
-export default {
-    components: {
-        Details    
-  }
-    }
-</script>
+import Loading from 'vue-loading-overlay'
+import 'vue-loading-overlay/dist/vue-loading.css'
 
+export default {
+    data() {
+        return {
+            transactionHash: this.$route.params.transactionHash
+        }
+    },
+    components: {
+        Details,
+        Loading
+    },
+    methods: {
+        ...mapActions(['fetchTransactionInfoByHash', 'changeLoaderState']),
+        ...mapMutations(['setLoaderState'])
+    },
+    computed: {
+        ...mapGetters(['getTransactionInfo', 'getLoader'])
+    },
+    created() {
+        this.setLoaderState(true)
+        this.fetchTransactionInfoByHash(this.transactionHash)
+            .then(() => {
+                this.setLoaderState(false)
+            })
+    },
+}
+</script>
 
 <--  ****************************** CSS ************************************-->
 

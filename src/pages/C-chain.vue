@@ -44,7 +44,7 @@ export default {
 .back {
   position: relative;
   min-height: 100%;
-  height: 1000px;
+  height: auto;
   background-image: url("https://cryptoactu.com/wp-content/uploads/2021/08/avalanche-avax-chainlink-tvl.jpeg");
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -52,6 +52,7 @@ export default {
   text-align: center;
   background-repeat: no-repeat;
   background-size: cover;
+  padding-bottom: 10px;
   
 }
 

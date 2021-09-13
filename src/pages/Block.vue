@@ -1,9 +1,9 @@
 <--  ****************************** HTML ************************************-->
 <template>
-  <div class="back">
+  <div class="back" v-if="hash">
     <Details :hash="hash"/>
     <p> Block Transactions </p>
-    <Transactions :hash="hash"/>
+    <Transactions :RouteType="RouteType" :hash="hash"/>
   </div>
 </template>
 <--  ****************************** SCRIPT ************************************-->
@@ -11,15 +11,25 @@
 <script>
 import Transactions from '../components/TransactionsTable.vue'
 import Details from '../components/BlockDetails.vue'
+import { mapActions } from 'vuex'
+
 export default {
   data () {
     return {
-      hash: this.$route.params.hash
+      hash: this.$route.params.hash,
+      RouteType: 'C'
     }
   },
   components: {
     Transactions, 
     Details   
+  },
+  methods: {
+    ...mapActions(['fetchTransactionsByBlockHash', 'fetchBlockByHash'])
+  },
+  created() {
+    this.fetchTransactionsByBlockHash(this.hash),
+    this.fetchBlockByHash(this.hash)
   }
 }
 </script>
@@ -27,7 +37,6 @@ export default {
 <--  ****************************** CSS ************************************-->
 
 <style scoped>
-
 
 .back {
   position: relative;

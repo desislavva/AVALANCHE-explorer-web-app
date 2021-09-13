@@ -2,11 +2,8 @@
 
 <template>
  <div class="info">
+          <h2> {{ getBlockInfo.hash }} </h2>
 
-
-          <h1> {{ getBlockInfo.hash }} </h1>
-
-          
           <h3> Number: <label> {{ parseInt(getBlockInfo.number) }} </label> </h3>
           
           <h3> Timestamp: <label> {{ convertDate() }} </label> </h3>
@@ -35,7 +32,7 @@ export default {
     hash: String
   },
   methods: {
-    ...mapActions(['fetchBlockByHash']),
+    //...mapActions(['fetchBlockByHash']),
     convertDate() {
       let date = new Date(this.getBlockInfo.timestamp * 1000);
       return date.toUTCString();
@@ -45,7 +42,7 @@ export default {
     ...mapGetters(['getBlockInfo'])
   },
   created() {
-    this.fetchBlockByHash(this.hash)
+    
   }
 }
 </script>
@@ -56,7 +53,7 @@ export default {
 .info{
   background-color: rgba(255,255,255, 0.56);
   background-clip: content-box;
-  width: 700px;
+  width: 1000px;
   padding: 40px;
   border-radius: 50px 50px 50px 50px; 
   text-align: center;

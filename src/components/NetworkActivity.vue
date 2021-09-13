@@ -47,6 +47,7 @@
   border-radius: 100px 100px 100px 100px; 
   border-style: outset;
   text-align: center;
+  margin: auto;
  
   
 }

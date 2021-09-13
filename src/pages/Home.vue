@@ -26,7 +26,6 @@
 import Table from '../components/TransactionsTable.vue'
 import Search from '../components/SearchBar.vue'
 import NetworkActivity from '../components/NetworkActivity.vue'
-import HomeS from '@/services/Home'
 
 export default {
     components: {
@@ -78,10 +77,12 @@ export default {
 .backp {
   position: relative;
   min-height: 100%;
-  height: 1000px;
+  height: auto;
   background-image: url(https://coinjournal.net/wp-content/uploads/imagecache/2021/08/1629291824161-542c54b4-f0f2-49d4-a0d3-67200ce11548-smartcrop-725x375.webp);
   background-size: contain;
   padding-top: 30px;
+  padding-bottom: 10px;
+
   
 }
 
