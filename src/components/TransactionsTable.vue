@@ -12,18 +12,11 @@
               </tr>
           </thead>
           <tbody>
-<<<<<<< HEAD
             <tr v-for="(transaction, index) in getTransactions" :key="index">
+              <td> <img src="https://icon-library.com/images/transactions-icon/transactions-icon-5.jpg" id="transaction"></td>
               <td><router-link to="/transaction"> {{ transaction.hash }} </router-link></td>
               <td><router-link to="/address"> {{ transaction.from }} </router-link></td>
               <td><router-link to="/address"> {{ transaction.to }} </router-link></td>
-=======
-            <tr>
-              <td> <img src="https://icon-library.com/images/transactions-icon/transactions-icon-5.jpg" id="transaction"></td>
-              <td><router-link to="/transaction"> {{hash}} </router-link></td>
-              <td><router-link to="/address"> {{from}} </router-link></td>
-              <td><router-link to="/address"> {{to}} </router-link></td>
->>>>>>> 841db2ca8ac6ebc5374965a02268acdb57ace892
               <td id="chain"> {{chain}} </td>
           </tr>
         </tbody>
@@ -105,14 +98,8 @@ a {
   font-weight: bold;
   background-color: rgba(255, 0, 0, 0.30);
 }
-
-<<<<<<< HEAD
-=======
 #transaction {
-
   height: 40px;
 }
 
-
->>>>>>> 841db2ca8ac6ebc5374965a02268acdb57ace892
 </style>
