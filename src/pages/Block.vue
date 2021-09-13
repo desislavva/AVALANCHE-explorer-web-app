@@ -40,14 +40,6 @@ import Details from '../components/BlockDetails.vue'
 
 <style scoped>
 
-p {
-  font-size: 40px;
-  text-align: left;
-  color: #FFFFFF;
-  margin-top: 0;
-  padding-top: 100px;
-}
-
 
 .back {
   position: relative;

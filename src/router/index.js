@@ -5,6 +5,8 @@ import Xchain from '../pages/X-chain.vue'
 import Pchain from '../pages/P-chain.vue'
 import Cchain from '../pages/C-chain.vue'
 import Block from '../pages/Block.vue'
+import Transaction from '../pages/Transaction.vue'
+import Address from '../pages/Address.vue'
 
 Vue.use(VueRouter)
 
@@ -36,6 +38,18 @@ const routes = [
     path: '/block',
     name: 'Block',
     component: Block
+
+  },
+  {
+    path: '/transaction',
+    name: 'Transaction',
+    component: Transaction
+
+  },
+  {
+    path: '/address',
+    name: 'Address',
+    component: Address
 
   }
 

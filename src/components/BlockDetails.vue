@@ -3,7 +3,7 @@
 <template>
 
  <div class="info">
-          <h3> Hash: <label> {{hash}} </label> </h3>
+          <h1> {{hash}} </h1>
           
           <h3> Number: <label> {{number}} </label> </h3>
           
@@ -51,6 +51,7 @@
   width: 700px;
   padding: 40px;
   border-radius: 50px 50px 50px 50px; 
+  text-align: center;
 }
 
 h3 {

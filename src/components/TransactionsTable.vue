@@ -6,6 +6,7 @@
         <table>
           <thead>
               <tr>
+              <th> </th>
               <th> HASH </th>
               <th> FROM </th>
               <th> TO </th>
@@ -14,6 +15,7 @@
           </thead>
           <tbody>
             <tr>
+              <td> <img src="https://icon-library.com/images/transactions-icon/transactions-icon-5.jpg" id="transaction"></td>
               <td><router-link to="/transaction"> {{hash}} </router-link></td>
               <td><router-link to="/address"> {{from}} </router-link></td>
               <td><router-link to="/address"> {{to}} </router-link></td>
@@ -53,14 +55,12 @@
 table {
   border: 1px solid #ccc;
   border-collapse: collapse;
-  margin: 0;
+  margin-bottom: 70px;
   padding: 20px;
   width: 100%;
   table-layout: fixed;
    
 }
-
-
 
 table tr {
   background: rgba(255,255,255,0.51);
@@ -95,6 +95,11 @@ a {
   font-size: 30px;
   font-weight: bold;
   background-color: rgba(255, 0, 0, 0.30);
+}
+
+#transaction {
+
+  height: 40px;
 }
 
 

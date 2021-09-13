@@ -3,13 +3,13 @@
 <template>
     <div>
 
-        <input 
+        <input
         type="text" 
         name="hash"
         v-model="hashOrNumber"
-        placeholder="block hash /number"/>
-
-        <p> {{error}}</p>
+        placeholder="hash /number"/>
+        <br/>
+        <label> {{error}} </label>
 
     </div>
 </template>
@@ -33,19 +33,25 @@
 
 <style scoped>
 
+.back {
+  margin-top: 10px;
+  
+}
+
 input {
   background-color: rgba(255,255,255, 0.70);
   font-size: 20px;
   border-radius: 25px;
   width: 600px;
   height: 30px;
-  margin-top: 50px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  
 }
 
-p {
-  
-  background-color: white;
-  font-weight: bold;
+label {
+  background-color: rgba(255,255,255, 0.70);
+  font-size: 22px;
 }
 
 </style>

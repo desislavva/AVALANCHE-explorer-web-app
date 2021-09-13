@@ -1,10 +1,10 @@
 <template>
      <div id="info"> 
         <hr>
-        <h4> Avalanche Explorer is an analytics tool <br/> 
+        <h3> Avalanche Explorer is an analytics tool <br/> 
             that enables people to search the Avalanche blockchain for transactions, <br/> 
             addresses, and other platform activities. <br/> <br/> 
-        </h4>
+        </h3>
     </div>
 </template>
 
@@ -18,7 +18,7 @@
 
 <style scoped>
 
-h4 {
+h3 {
    margin-bottom: 0px;
 }
 
