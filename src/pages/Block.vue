@@ -3,7 +3,7 @@
   <div class="back">
     <Details :hash="hash"/>
     <p> Block Transactions </p>
-    <Transactions />
+    <Transactions :hash="hash"/>
   </div>
 </template>
 <--  ****************************** SCRIPT ************************************-->

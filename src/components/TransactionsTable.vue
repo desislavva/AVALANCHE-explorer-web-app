@@ -1,8 +1,6 @@
 !--  ****************************** HTML ************************************-->
-
 <template>
     <div>
-      
         <table>
           <thead>
               <tr>
@@ -13,37 +11,43 @@
               </tr>
           </thead>
           <tbody>
-            <tr>
-              <td><router-link to="/transaction"> {{hash}} </router-link></td>
-              <td><router-link to="/address"> {{from}} </router-link></td>
-              <td><router-link to="/address"> {{to}} </router-link></td>
+            <tr v-for="(transaction, index) in getTransactions" :key="index">
+              <td><router-link to="/transaction"> {{ transaction.hash }} </router-link></td>
+              <td><router-link to="/address"> {{ transaction.from }} </router-link></td>
+              <td><router-link to="/address"> {{ transaction.to }} </router-link></td>
               <td id="chain"> {{chain}} </td>
           </tr>
         </tbody>
       </table>
-
     </div>
 </template>
 
 !--  ****************************** SCRIPT ************************************-->
 
 <script>
+import { mapGetters, mapActions } from 'vuex'
 
-    export default {
-        components: {
-            
-        },
-        data (){
-          return {
-            hash: '1',
-            from: '0x99999999',
-            to: '099999',
-            chain: 'X'
-
-          }
-
-        }
+export default {
+  data() {
+    return {
+      chain: 'NULL'
     }
+  },
+  props: {
+    hash: String
+  },
+  methods: {
+    ...mapActions(['fetchTransactionsByBlockHash'])
+  },
+  computed: {
+    ...mapGetters(['getTransactions'])
+  },
+  created() {
+    if (this.$route.name === 'Block') {
+      this.fetchTransactionsByBlockHash(this.hash)
+    }    
+  }
+}
 </script>
 
 <--  ****************************** CSS ************************************-->
@@ -57,10 +61,7 @@ table {
   padding: 20px;
   width: 100%;
   table-layout: fixed;
-   
 }
-
-
 
 table tr {
   background: rgba(255,255,255,0.51);
@@ -78,7 +79,6 @@ table th {
   text-align: center;
 }
 
-
 table th {
   font-size: .85em;
   letter-spacing: .1em;
@@ -88,14 +88,13 @@ table th {
 a {
   color: black;
   font-weight: bold;
+  font-size: 10px;
 }
 
 #chain {
-
   font-size: 30px;
   font-weight: bold;
   background-color: rgba(255, 0, 0, 0.30);
 }
-
 
 </style>

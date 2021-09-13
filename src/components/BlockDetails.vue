@@ -6,11 +6,11 @@
           
           <h3> Number: <label> {{ parseInt(getBlockInfo.number) }} </label> </h3>
           
-          <h3> Timestamp: <label> {{ convertDate() }} bytes</label> </h3>
+          <h3> Timestamp: <label> {{ convertDate() }} </label> </h3>
           
-          <h3> Size: <label> {{ parseInt(getBlockInfo.size) }}  </label> </h3>
+          <h3> Size: <label> {{ parseInt(getBlockInfo.size) }} bytes</label> </h3>
           
-          <h3> Parent Hash: <label><router-link to="/block"> {{ getBlockInfo.parentHash }} </router-link> </label> </h3>
+          <h3> Parent Hash: <label><router-link :to="{ name: 'Block', params: { hash: getBlockInfo.parentHash } }"> {{ getBlockInfo.parentHash }} </router-link> </label> </h3>
           
           <h3> Gas used: <label> {{ parseInt(getBlockInfo.gasUsed) }} </label> </h3>
           
@@ -26,13 +26,6 @@ import { mapGetters, mapActions } from 'vuex'
 export default {
   data () {
     return {
-      // hash: '0x00000000000000000',
-      // number: 'wqwqwqw',
-      // timestamp: '12.2121.2121',
-      // size: '2222',
-      // parent: '0x11111111111111111',
-      // gasused: '2',
-      // gaslimit: '2'
     }
   },
   props: {

@@ -4,17 +4,20 @@ const chunk = require('chunk');
 
 const state = {
     blocks: [],
-    blockInfo: Object
+    blockInfo: Object,
+    transactions: []
 }
 
 const getters = {
     blocksList: state => state.blocks,
-    
+
     chunkedBlocks: (state) => {
         return chunk(state.blocks.slice(0, 6), 2)
     },
 
-    getBlockInfo: state => state.blockInfo
+    getBlockInfo: state => state.blockInfo,
+
+    getTransactions: state => state.transactions
 }
 
 const actions = {
@@ -31,7 +34,14 @@ const actions = {
                 console.log(response.data.result);
                 commit('setBlockInfo', response.data.result)
             })
-    } 
+    },
+    fetchTransactionsByBlockHash({ commit }, hashPayload) {
+        axios.get(`http://localhost:4444/blocks/hash/${hashPayload}`)
+            .then(response => {
+                console.log(response.data.result.transactions);
+                commit('setTransactions', response.data.result.transactions)
+            })
+    }
 }
 
 const mutations = {
@@ -42,6 +52,9 @@ const mutations = {
     },
     setBlockInfo (state, blockInfo) {
         state.blockInfo = blockInfo
+    },
+    setTransactions (state, transactions) {
+        state.transactions = transactions
     }
 }
 
