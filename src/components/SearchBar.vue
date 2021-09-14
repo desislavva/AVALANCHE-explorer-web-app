@@ -15,6 +15,8 @@
 
 !--  ****************************** SCRIPT ************************************-->
 <script>
+import { mapActions } from 'vuex'
+
 export default {
   data () {
     return {
@@ -30,6 +32,7 @@ export default {
       if (this.inputValue.slice(0, 2) == '0x') {
         if (/^0x([A-Fa-f0-9]{64})$/.test(this.inputValue)) {
           //transaction or block hash
+
         } else {
           //address hash
         }

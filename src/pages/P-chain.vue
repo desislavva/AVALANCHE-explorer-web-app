@@ -16,17 +16,11 @@
       </div>
 
   
-    <Search />
+    <Search :searchBarPlaceholderText="this.searchBarPlaceholderText"/>
 
     <p> Recent Transactions </p>
 
     <TransactionsTable />
-
-    
-
-    
-
-
   </div>
 </template>
 !--  ****************************** SCRIPT ************************************-->
@@ -38,10 +32,14 @@ import TransactionsTable from '../components/TransactionsTable.vue'
 
 
 export default {
+  data() {
+    return {
+      searchBarPlaceholderText: "tx hash / address hash"
+    }
+  },
   components: {
       TransactionsTable,
       Search
-      
   },
   methods: { 
      

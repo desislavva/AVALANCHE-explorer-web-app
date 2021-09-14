@@ -13,7 +13,8 @@ const state = {
     transactions: [],
     transactionInfo: Object,
     addressDetail: [],
-    networkActivity: []
+    networkActivity: [],
+    unacceptedTransactions: []
 }
 
 const getters = {
@@ -37,14 +38,18 @@ const getters = {
 
     getAddressDetails: state => state.addressDetail,
 
-    getNetworkActivity: state => state.networkActivity
+    getNetworkActivity: state => state.networkActivity,
+
+    getUnacceptedTransactions: state => state.unacceptedTransactions
 }
 
 const actions = {
-    fetchBlocks({ commit }) {
+    fetchBlocks({ commit, state }) {
         axios.get('http://localhost:4444/blocks/number/latest/')
             .then(response => {
-                console.log(response.data.result);
+                if (state.blocks.length > 6) {
+                    commit('clearBlocksArray')
+                }
                 commit('setStateBlocks', response.data.result)
             })
     },
@@ -61,6 +66,8 @@ const actions = {
             .then(response => {
                 console.log(response.data.result.transactions);
                 commit('setTransactions', response.data.result.transactions)
+        }).catch((error) => {
+            console.log(error)
         })}, 1000)
     },
     fetchTransactionInfoByHash({ commit }, hashPayload) {
@@ -82,6 +89,13 @@ const actions = {
             .then(response => {
                 console.log(response.data);
                 commit('setNetworkActivity', response.data)
+            })
+    },
+    fetchUnacceptedTransactions({ commit }) {
+        axios.get(`http://localhost:4444/transactions/999/999`)
+            .then(response => {
+                console.log(response.data);
+                commit('setUnacceptedTransactions', response.data)
             })
     }
 }
@@ -109,6 +123,12 @@ const mutations = {
     },
     setNetworkActivity (state, networkActivity) {
         state.networkActivity = networkActivity
+    },
+    clearBlocksArray (state) {
+        state.blocks.pop()
+    },
+    setUnacceptedTransactions (state, unacceptedTransactions) {
+        state.unacceptedTransactions = unacceptedTransactions
     }
 }
 

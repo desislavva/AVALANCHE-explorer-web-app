@@ -9,11 +9,9 @@
 
     <TransactionsTable />
 
-    <p> Unaccepted Transactions </p>
+    <p> Last Unaccepted Transactions </p>
 
     <UnacceptedTransactionsTable />
-
-
   </div>
 </template>
 
@@ -23,7 +21,7 @@
 import Search from '../components/SearchBar.vue'
 import BlocksTable from '../components/BlocksTable.vue'
 import TransactionsTable from '../components/TransactionsTable.vue'
-import UnacceptedTransactionsTable from '../components/TransactionsTable.vue'
+import UnacceptedTransactionsTable from '../components/UnacceptedTransactionsTable.vue'
 
 export default {
   data() {
