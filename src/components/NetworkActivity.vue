@@ -6,7 +6,7 @@
         <br />
         
         <label> Total staked AVAX </label>
-        <h1> {{ getNetworkActivity[0] }}  AVAX </h1>
+        <h1> {{ getNetworkActivity[0].slice(0, 8) }}  AVAX </h1>
 
         <br />
 

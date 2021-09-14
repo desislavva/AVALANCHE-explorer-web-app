@@ -2,32 +2,48 @@
 
 <template>
     <div>
-
-        <input
-        type="text" 
-        name="hash"
-        v-model="hashOrNumber"
-        placeholder="hash /number"/>
-        <br/>
-        <label> {{error}} </label>
-
+      <input
+      @keyup.enter="onEnter"
+      type="text" 
+      name="hash"
+      v-model="inputValue"
+      :placeholder="searchBarPlaceholderText"/>
+      <br/>
+      <label> {{ error }} </label>
     </div>
 </template>
 
-
 !--  ****************************** SCRIPT ************************************-->
-
 <script>
 export default {
   data () {
     return {
-      hashOrNumber: '',
-      error: ''
+      inputValue: '',
+      error: 'asdasdsa',
+    }
+  },
+  props: {
+    searchBarPlaceholderText: String
+  },
+  methods: {
+    onEnter() {
+      if (this.inputValue.slice(0, 2) == '0x') {
+        if (/^0x([A-Fa-f0-9]{64})$/.test(this.inputValue)) {
+          //transaction or block hash
+        } else {
+          //address hash
+        }
+      } else if (this.inputValue.charAt(0) == 'X') {
+        //x-chain address hash
+      } else if (this.inputValue.charAt(0) == 'P') {
+        //p-chain address hash
+      } else if (this.inputValue.match(/^[0-9]+$/) != null) {
+        //c-chain block number
+      }
     }
   }
 }
 </script>
-
 
 <--  ****************************** CSS ************************************-->
 

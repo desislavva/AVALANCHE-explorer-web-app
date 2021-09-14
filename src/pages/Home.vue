@@ -3,12 +3,12 @@
 <template>
   <div class="backp">
 
-    <NetworkActivity />
+    <NetworkActivity v-if="isMounted"/>
 
     <p> Recent Transactions  </p>
 
     <div class="search">
-      <Search />
+      <Search :searchBarPlaceholderText="this.searchBarPlaceholderText"/>
     </div>
 
     <Table />
@@ -22,7 +22,6 @@
 !--  ****************************** SCRIPT ************************************-->
 
 <script>
-
 import Table from '../components/TransactionsTable.vue'
 import Search from '../components/SearchBar.vue'
 import NetworkActivity from '../components/NetworkActivity.vue'
@@ -31,39 +30,23 @@ export default {
     components: {
       Table,
       Search,
-      NetworkActivity,
-
-      
-  },
+      NetworkActivity
+    },
     data () {
       return {
-        hash: 'asdas',
-        error: null
+        isMounted: false,
+        searchBarPlaceholderText: "tx hash"
       }
+    },
+  methods: { 
+
   },
-   
-
-    methods: { 
-      async getD () {
-        try {
-        const response = await HomeS.getD({
-          
-
-        })
-        } catch(error){
-          this.error = error.response.data.error;
-        }
-         this.error = ""; 
-
-
-      }
-    }
+  mounted() {
+    this.isMounted = true;
   }
-  
+}
 
 </script>
-
-
 <--  ****************************** CSS ************************************-->
 
 

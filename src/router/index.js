@@ -35,7 +35,7 @@ const routes = [
 
   },
   {
-    path: '/block/:hash',
+    path: '/block/:hash/:pageNumber',
     name: 'Block',
     component: Block
   },

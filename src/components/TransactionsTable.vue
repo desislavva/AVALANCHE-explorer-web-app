@@ -12,7 +12,7 @@
               </tr>
           </thead>
           <tbody v-if="dataRouteType == 'C'">
-            <tr v-for="(transaction, index) in getTransactions" :key="index">
+            <tr v-for="(transaction, index) in getChunkedTransactions[this.$route.params.pageNumber - 1]" :key="index">
               <td> <img src="https://icon-library.com/images/transactions-icon/transactions-icon-5.jpg" id="transaction"></td>
               <td><router-link :to="{ name: 'Transaction', params: { transactionHash: transaction.hash } }"> {{ transaction.hash }} </router-link></td>
               <td><router-link :to="{ name: 'Address', params: { addressHash: transaction.from } }"> {{ transaction.from }} </router-link></td>
@@ -21,6 +21,7 @@
           </tr>
         </tbody>
       </table>
+      <Pagination v-if="dataRouteType == 'C'" :pages="findPages()"/>
     </div>
 </template>
 
@@ -29,11 +30,17 @@
 <script>
 import { mapGetters } from 'vuex'
 
+import Pagination from './Pagination.vue'
+
 export default {
   data() {
     return {
-      dataRouteType: 'NULL'
+      dataRouteType: 'NULL',
+      //allPages: ''
     }
+  },
+  components: {
+    Pagination
   },
   props: {
     hash: String,
@@ -42,10 +49,19 @@ export default {
   methods: {
     setRouteType() {
       this.dataRouteType = this.RouteType
+    },
+    findPages() {
+      let allPages = Math.trunc(this.getTransactions.length / 5)
+
+      if (this.getTransactions.length % 5 != 0){
+        return allPages + 1
+      } 
+
+      return allPages
     }
   },
   computed: {
-    ...mapGetters(['getTransactions']),
+    ...mapGetters(['getTransactions', 'getChunkedTransactions']),
     
   },
   created() {

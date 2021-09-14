@@ -6,7 +6,7 @@
                  :color="getLoader.color"/>
     <Details :hash="hash"/>
     <p> Block Transactions </p>
-    <Transactions :RouteType="RouteType" :hash="hash"/>
+    <Transactions :RouteType="RouteType" :hash="hash" :pageNumber="pageNumber" />
   </div>
 </template>
 <--  ****************************** SCRIPT ************************************-->
@@ -24,7 +24,8 @@ export default {
   data () {
     return {
       hash: this.$route.params.hash,
-      RouteType: 'C',
+      pageNumber: this.$route.params.pageNumber,
+      RouteType: 'C'
     }
   },
   components: {

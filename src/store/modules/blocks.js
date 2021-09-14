@@ -29,6 +29,10 @@ const getters = {
 
     getTransactions: state => state.transactions,
 
+    getChunkedTransactions: (state) => {
+        return chunk(state.transactions, 5)
+    },
+
     getTransactionInfo: state => state.transactionInfo,
 
     getAddressDetails: state => state.addressDetail,

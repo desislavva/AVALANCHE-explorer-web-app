@@ -2,7 +2,7 @@
 
 <template>
   <div class="back">
-    <Search />
+    <Search :searchBarPlaceholderText="this.searchBarPlaceholderText"/>
     <BlocksTable />
 
     <p> Recent Transactions </p>
@@ -26,6 +26,11 @@ import TransactionsTable from '../components/TransactionsTable.vue'
 import UnacceptedTransactionsTable from '../components/TransactionsTable.vue'
 
 export default {
+  data() {
+    return {
+      searchBarPlaceholderText: 'Block hash / block number / tx hash / address hash'
+    }
+  },
   components: {
       BlocksTable,
       TransactionsTable,
