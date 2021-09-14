@@ -1,39 +1,61 @@
 <template>
     <div class="back">
+        <loading :active.sync="getLoader.isLoading"
+                 :is-full-page="false"
+                 :color="getLoader.color"/>
         <br />
         
-        <label> 24h Volume </label>
-        <h1> {{volume}}  AVAX </h1>
+        <label> Total staked AVAX </label>
+        <h1> {{ getNetworkActivity[0] }}  AVAX </h1>
 
         <br />
 
-        <label> Blocks </label>
-        <h2> {{blocks}} </h2>
-
-        <label> Transactions </label>
-        <h2> {{transactions}} </h2>
-
         <label> Validators </label>
-        <h2> {{validators}} </h2>
-        </div>
+        <h2> {{ getNetworkActivity[1] }} </h2>
 
-    
+        <label> C-chain latest block </label>
+        <h2> {{ getNetworkActivity[2] }} </h2>
+
+        <label> P-chain latest block </label>
+        <h2> {{ getNetworkActivity[3] }} </h2>
+    </div> 
 </template>
 
 <script>
-    export default {
-        data () {
-            return {
-                  volume: '567 567 567',
-                  blocks: '111111.11',                  transactions: '12.2121.2121',
-                  validators: '2222',
-                  parent: '0x11111111111111111',
-                  gasused: '2',
-                  gaslimit: '2'
-            }
-      }
-        
-    }
+import { mapGetters, mapActions, mapMutations } from 'vuex'
+
+import Loading from 'vue-loading-overlay'
+import 'vue-loading-overlay/dist/vue-loading.css'
+
+export default {
+    data () {
+        return {
+            setIntervalId: null
+        }
+    },
+    components: {
+        Loading
+    },
+    methods: {
+        ...mapActions(['fetchNetworkActivity']),
+        ...mapMutations(['setLoaderState'])
+    },
+    computed: {
+        ...mapGetters(['getNetworkActivity', 'getLoader'])
+    },
+    created() {
+        this.setLoaderState(true)
+        this.setIntervalId = setInterval(() => {
+            this.fetchNetworkActivity()
+                .then(() => {
+                    this.setLoaderState(false)
+                })
+        }, 2000)
+    },
+    beforeDestroy() {
+        clearInterval(this.setIntervalId)
+    } 
+}
 </script>
 
 <style scoped>

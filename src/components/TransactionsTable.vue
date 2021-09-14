@@ -15,9 +15,9 @@
             <tr v-for="(transaction, index) in getTransactions" :key="index">
               <td> <img src="https://icon-library.com/images/transactions-icon/transactions-icon-5.jpg" id="transaction"></td>
               <td><router-link :to="{ name: 'Transaction', params: { transactionHash: transaction.hash } }"> {{ transaction.hash }} </router-link></td>
-              <td><router-link to="/address"> {{ transaction.from }} </router-link></td>
-              <td><router-link to="/address"> {{ transaction.to }} </router-link></td>
-              <td id="chain"> {{chain}} </td>
+              <td><router-link :to="{ name: 'Address', params: { addressHash: transaction.from } }"> {{ transaction.from }} </router-link></td>
+              <td><router-link :to="{ name: 'Address', params: { addressHash: transaction.to } }"> {{ transaction.to }} </router-link></td>
+              <td id="chain"> {{ dataRouteType }} </td>
           </tr>
         </tbody>
       </table>
@@ -27,36 +27,33 @@
 !--  ****************************** SCRIPT ************************************-->
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters } from 'vuex'
 
 export default {
   data() {
     return {
-      chain: 'NULL',
       dataRouteType: 'NULL'
     }
   },
   props: {
     hash: String,
-    RouteType: String
+    RouteType: String,
   },
   methods: {
     setRouteType() {
-      console.log("Route type in setRouteType: " + this.dataRouteType)
       this.dataRouteType = this.RouteType
     }
   },
   computed: {
-    ...mapGetters(['getTransactions'])
+    ...mapGetters(['getTransactions']),
+    
   },
   created() {
     if (this.RouteType == 'C') {
       this.setRouteType()
-      console.log("Route type in created: " + this.dataRouteType)
     }
   },
   beforeDestroy() {
-    console.log("Route type in beforeDestroy: " + this.dataRouteType)
     this.dataRouteType = 'NULL'
   }
 }
@@ -72,6 +69,8 @@ table {
   margin-bottom: 20px;
   padding: 50px;
   width: 1000px;
+  text-align: center;
+  margin: auto;
   
 }
 
@@ -86,7 +85,7 @@ table td {
   white-space: nowrap;
 text-overflow:ellipsis;
 overflow: hidden;
-max-width:1px;
+max-width:10px;
   
   
 }
@@ -106,7 +105,7 @@ table th {
 a {
   color: black;
   font-weight: bold;
-  font-size: 10px;
+  font-size: 15px;
 }
 
 #chain {

@@ -2,7 +2,8 @@
 <template>
     <div class="back">
         <loading :active.sync="getLoader.isLoading"
-                 :is-full-page="getLoader.fullPage"/>
+                 :is-full-page="getLoader.fullPage"
+                 :color="getLoader.color"/>
         <Details v-if="getTransactionInfo.hash" :transactionHash="transactionHash"/>
     </div>
 </template>
@@ -27,7 +28,7 @@ export default {
         Loading
     },
     methods: {
-        ...mapActions(['fetchTransactionInfoByHash', 'changeLoaderState']),
+        ...mapActions(['fetchTransactionInfoByHash']),
         ...mapMutations(['setLoaderState'])
     },
     computed: {

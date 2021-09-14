@@ -1,31 +1,32 @@
 <template>
-   
-<div class="info">
-          <h1> {{hash}} </h1>
-          
-          <h3> Transactions: <label> {{numberOftransactions}} </label> </h3>
-          
-          <h3> Balance: <label> {{balance}} </label> </h3>
-          
-        </div>
+  <div class="info">
+    <h2> {{ addressHash }} </h2>
     
+    <h3> Transactions: <label> {{ getAddressDetails[1] }} </label> </h3>
+    
+    <h3> Balance: <label> {{ getAddressDetails[0] }} AVAX</label> </h3>
+    
+  </div>
 </template>
 
-
-<--  ****************************** SCRIPT ************************************-->
+<--  ****************************** SCRIPT *********************************-->
 
 <script>
-    export default {
-        data () {
-            return {
-                  hash: '0x00000000000000000',
-                  balance: '2234.2323232',
-                  numberOftransactions: '4'
-            }
-        }
-    }
-</script>
+import { mapGetters } from 'vuex'
 
+export default {
+  data () {
+    return {
+    }
+  },
+  props: {
+    addressHash: String
+  },
+  computed: {
+    ...mapGetters(['getAddressDetails'])
+  }
+}
+</script>
 
 <--  ****************************** CSS ************************************-->
 

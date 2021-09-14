@@ -21,7 +21,7 @@
 <--  ****************************** SCRIPT ************************************-->
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters } from 'vuex'
 
 export default {
   data () {
@@ -32,7 +32,6 @@ export default {
     hash: String
   },
   methods: {
-    //...mapActions(['fetchBlockByHash']),
     convertDate() {
       let date = new Date(this.getBlockInfo.timestamp * 1000);
       return date.toUTCString();

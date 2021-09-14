@@ -5,12 +5,15 @@ const chunk = require('chunk');
 const state = {
     loader: {
         isLoading: false,
-        fullPage: true
+        fullPage: true,
+        color: '#ff0000'
     },
     blocks: [],
     blockInfo: Object,
     transactions: [],
-    transactionInfo: Object
+    transactionInfo: Object,
+    addressDetail: [],
+    networkActivity: []
 }
 
 const getters = {
@@ -26,7 +29,11 @@ const getters = {
 
     getTransactions: state => state.transactions,
 
-    getTransactionInfo: state => state.transactionInfo
+    getTransactionInfo: state => state.transactionInfo,
+
+    getAddressDetails: state => state.addressDetail,
+
+    getNetworkActivity: state => state.networkActivity
 }
 
 const actions = {
@@ -50,8 +57,7 @@ const actions = {
             .then(response => {
                 console.log(response.data.result.transactions);
                 commit('setTransactions', response.data.result.transactions)
-            })
-        }, 1000);
+        })}, 1000)
     },
     fetchTransactionInfoByHash({ commit }, hashPayload) {
         return axios.get(`http://localhost:4444/transactions/hash/${hashPayload}`)
@@ -59,6 +65,20 @@ const actions = {
             console.log(response.data.result);
             commit('setTransactionInfo', response.data.result)
         })
+    },
+    fetchAddressDetails({ commit }, hashPayload) {
+        axios.get(`http://localhost:4444/address/hash/${hashPayload}`)
+            .then(response => {
+                console.log(response.data);
+                commit('setAddressDetail', response.data)
+            })
+    },
+    fetchNetworkActivity({ commit }) {
+        axios.get(`http://localhost:4444/network`)
+            .then(response => {
+                console.log(response.data);
+                commit('setNetworkActivity', response.data)
+            })
     }
 }
 
@@ -79,6 +99,12 @@ const mutations = {
     },
     setTransactionInfo (state, transaction) {
         state.transactionInfo = transaction
+    },
+    setAddressDetail (state, addressDetail) {
+        state.addressDetail = addressDetail
+    },
+    setNetworkActivity (state, networkActivity) {
+        state.networkActivity = networkActivity
     }
 }
 

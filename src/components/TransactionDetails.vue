@@ -1,15 +1,15 @@
 <--  ****************************** HTML ************************************-->
 <template>
   <div class="info">
-    <h3> {{ getTransactionInfo.hash }} </h3>
+    <h2> {{ getTransactionInfo.hash }} </h2>
     
     <h3> Value: <label> {{ findValueInAVAX() }} AVAX</label> </h3>
     
-    <h3> From: <label><router-link to="/address"> {{ getTransactionInfo.from }} </router-link> </label> </h3>
+    <h3> From: <label><router-link :to="{ name: 'Address', params: { addressHash: getTransactionInfo.from } }"> {{ getTransactionInfo.from }} </router-link> </label> </h3>
     
-    <h3> To: <label><router-link to="/address"> {{ getTransactionInfo.to }} </router-link></label> </h3>
+    <h3> To: <label><router-link :to="{ name: 'Address', params: { addressHash: getTransactionInfo.to } }"> {{ getTransactionInfo.to }} </router-link></label> </h3>
     
-    <h3> Block: <label> {{ getTransactionInfo.blockHash }} </label> </h3>
+    <h3> Block: <label> <router-link :to="{ name: 'Block', params: { hash: getTransactionInfo.blockHash } }">{{ getTransactionInfo.blockHash }} </router-link></label> </h3>
 
     <h3> Blockchain: <label> {{ findBlockchain() }} </label> </h3>
   </div> 
@@ -18,7 +18,7 @@
 <--  ****************************** SCRIPT ************************************-->
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters } from 'vuex'
 const web3 = require('web3-utils')
 
 export default {
@@ -57,7 +57,7 @@ export default {
   width: 50%;
   background-color: rgba(255,255,255, 0.56);
   background-clip: content-box;
-  width: 700px;
+  width: 900px;
   padding-top: 100px;
   border-radius: 50px 50px 50px 50px; 
   text-align: center;
