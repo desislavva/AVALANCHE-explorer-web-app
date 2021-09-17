@@ -9,9 +9,12 @@
     <Transactions :RouteType="RouteType" :hash="hash" :pageNumber="pageNumber" />
   </div>
 </template>
+
+
 <--  ****************************** SCRIPT ************************************-->
 
 <script>
+
 import { mapActions, mapGetters, mapMutations } from 'vuex'
 
 import Transactions from '../components/TransactionsTable.vue'

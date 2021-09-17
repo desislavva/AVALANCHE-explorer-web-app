@@ -29,12 +29,14 @@ export default {
       searchBarPlaceholderText: 'Block hash / block number / tx hash / address hash'
     }
   },
+
   components: {
       BlocksTable,
       TransactionsTable,
       Search,
       UnacceptedTransactionsTable
   },
+  
   methods: { 
      
     }

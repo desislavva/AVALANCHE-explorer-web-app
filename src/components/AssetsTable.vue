@@ -1,37 +1,15 @@
 <--  ****************************** HTML ************************************-->
 <template>
     <div>
-  <table>
-          <caption> Assets </caption>
-          <tbody>
-            <tr>
-              
-              <td> 
-
-                
-                <p> {{id}} <br/> {{name}} <br /> {{symbol}} </p>
-              
-              </td>
-              <td> 
-                
-                
-                  <p> {{id}} <br/> {{name}} <br /> {{symbol}} </p>
-                
-              </td>
-
-              <td> 
-                
-                
-                  <p> {{id}} <br/> {{name}} <br /> {{symbol}} </p>
-                
-              </td>
-             
-             
-              
-           
-            </tr>
-          </tbody>
-          
+      <table>
+        <caption> Assets </caption>
+        <tbody>
+          <tr v-for="(assetDetails, index) in getAddressDetails.slice(1)" :key="index">
+            <td> 
+              <p> {{ assetDetails.assetID }} <br/> {{ assetDetails.name }} <br /> {{ assetDetails.symbol }} </p>
+            </td>
+          </tr>
+        </tbody>
       </table>
     </div>
 </template>
@@ -39,16 +17,17 @@
 <--  ****************************** SCRIPT ************************************-->
 
 <script>
-    export default {
-         data () {
-            return {
-                  id: 'dosdksojdosdjosds',
-                  name: 'namename',
-                  symbol: 'NAME',
-                 
-            }
-      }
+import { mapGetters } from 'vuex'
+
+export default {
+  data () {
+    return {
     }
+  },
+  computed: {
+    ...mapGetters(['getAddressDetails'])
+  }
+}
 </script>
 
 <--  ****************************** CSS ************************************-->

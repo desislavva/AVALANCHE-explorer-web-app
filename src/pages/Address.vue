@@ -4,17 +4,17 @@
        <loading :active.sync="getLoader.isLoading"
                  :is-full-page="getLoader.fullPage"
                  :color="getLoader.color"/>
-         <Details :addressHash="addressHash" />
-        <!-- if (only for X-chain)  -->
+         <Details :addressHash="addressHash"/>
          <Assets v-if="chainType == 'X'"/>
         <p> Address Transactions </p>
-         <Transactions />
+         <Transactions :addressHashType="addressHashType"/>
     </div>
 </template>
 
 <--  ****************************** SCRIPT ************************************-->
 
 <script>
+
 import { mapGetters, mapActions, mapMutations } from 'vuex'
 
 import Details from '../components/AddressDetails.vue'
@@ -28,6 +28,7 @@ export default {
   data() {
     return {
       addressHash: this.$route.params.addressHash,
+      addressHashType: null,
       setIntervalId: null,
       chainType: null
     }
@@ -39,12 +40,14 @@ export default {
     Loading
   },
   methods: {
-    ...mapActions(['fetchAddressDetails']),
+    ...mapActions(['fetchAddressDetails', 'fetchTransactionsByAddress']),
     ...mapMutations(['setLoaderState']),
+
     findChainType() {
       if (this.addressHash.charAt(0) == 'X') {
         console.log(this.chainType)
         this.chainType = 'X'
+        this.addressHashType = 'X'
       }
     }
   },
@@ -60,6 +63,11 @@ export default {
       })
     }, 2000)
     this.findChainType()
+    // if (this.addressHashType == 'X') {
+    //   this.setIntervalId = setInterval(() => {
+    //     this.fetchTransactionsByAddress(this.addressHash)
+    //   }, 1000)
+    // }
   },
   beforeDestroy() {
     clearInterval(this.setIntervalId)

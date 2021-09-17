@@ -42,17 +42,23 @@ export default {
 .pagination-container {
     display: flex;
     justify-content: center;
-    
-    
-    
 }
    
 button {
       background-color: rgba(0, 0, 0, 0.56);
       color: white;
-      border-radius: 100px 100px 100px 100px; 
-      
+      border-radius: 100px 100px 100px 100px;
+      padding: 10px;
+      width: 100px;
+      cursor: pointer;
+      transition: all 0.3s ease-in-out;
 }
+
+button:hover {
+    background-color: white;
+    color: black;
+}
+
 .fal {
     width: 20px;
     color: #2997ff;

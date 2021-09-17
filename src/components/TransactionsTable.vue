@@ -18,8 +18,30 @@
               <td><router-link :to="{ name: 'Address', params: { addressHash: transaction.from } }"> {{ transaction.from }} </router-link></td>
               <td><router-link :to="{ name: 'Address', params: { addressHash: transaction.to } }"> {{ transaction.to }} </router-link></td>
               <td id="chain"> {{ dataRouteType }} </td>
-          </tr>
-        </tbody>
+            </tr>
+          </tbody>
+          <!-- <tbody v-if="addressHashType == 'X'">
+            <tr v-for="(transaction, index) in getAddressTransactions" :key="index">
+              <td> <img src="https://icon-library.com/images/transactions-icon/transactions-icon-5.jpg" id="transaction"></td>
+              <td><router-link :to="{ name: 'Transaction', params: { transactionHash: transaction.id } }"> {{ transaction.id }} </router-link></td>
+              <tr v-for="(transactionElementInputs, index) in transaction.inputs" :key="index">
+                <td><router-link :to="{ name: 'Address', params: { addressHash: `X-${transactionElementInputs.output.addresses[0]}` } }"> {{ transactionElementInputs.output.addresses[0] }} </router-link></td>
+
+              <tr v-for="(transactionElementsOutputs, index) in transaction.outputs" :key="index">
+              <td><router-link :to="{ name: 'Address', params: { addressHash: `X-${transactionElementsOutputs.addresses[0]}` } }"> {{ transactionElementsOutputs.addresses[0] }} </router-link></td>
+              <td id="chain"> {{ X }} </td>
+            </tr>
+          </tbody> -->
+          <tbody v-if="parentComponent == 'Home'">
+            <tr v-for="(recentTransactions, index) in getRecentTransactions.slice(0, 5)" :key="index">
+              <td> <img src="https://icon-library.com/images/transactions-icon/transactions-icon-5.jpg" id="transaction"></td>
+              <td><router-link :to="{ name: 'Transaction', params: { transactionHash: recentTransactions.id } }"> {{ recentTransactions.id }} </router-link></td>
+              <td><router-link :to="{ name: 'Address', params: { addressHash: `X-${recentTransactions.inputs[0].output.addresses[0]}` } }"> {{ recentTransactions.inputs[0].output.addresses[0] }} </router-link></td>
+              <td><router-link :to="{ name: 'Address', params: { addressHash: `X-${recentTransactions.outputs[0].addresses[0]}` } }"> {{ recentTransactions.outputs[0].addresses[0] }} </router-link></td>
+              <td v-if="recentTransactions.chainID == '11111111111111111111111111111111LpoYY'" id="chain"> P </td>
+              <td v-else id="chain"> X </td>
+            </tr>
+          </tbody>
       </table>
       <Pagination v-if="dataRouteType == 'C'" :pages="findPages()"/>
     </div>
@@ -36,7 +58,7 @@ export default {
   data() {
     return {
       dataRouteType: 'NULL',
-      //allPages: ''
+      chain: 'X'
     }
   },
   components: {
@@ -45,6 +67,8 @@ export default {
   props: {
     hash: String,
     RouteType: String,
+    addressHashType: String,
+    parentComponent: String
   },
   methods: {
     setRouteType() {
@@ -61,7 +85,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getTransactions', 'getChunkedTransactions']),
+    ...mapGetters(['getTransactions', 'getChunkedTransactions', 'getAddressTransactions', 'getRecentTransactions'])
     
   },
   created() {

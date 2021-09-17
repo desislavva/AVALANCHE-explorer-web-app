@@ -3,6 +3,7 @@ import axios from 'axios'
 const chunk = require('chunk');
 
 const state = {
+    
     loader: {
         isLoading: false,
         fullPage: true,
@@ -10,11 +11,14 @@ const state = {
     },
     blocks: [],
     blockInfo: Object,
+    blockInfoByNumber: Object,
     transactions: [],
     transactionInfo: Object,
     addressDetail: [],
     networkActivity: [],
-    unacceptedTransactions: []
+    unacceptedTransactions: [],
+    transactionsByAddress: [],
+    recentTransactions: []
 }
 
 const getters = {
@@ -28,6 +32,8 @@ const getters = {
 
     getBlockInfo: state => state.blockInfo,
 
+    getBlockInfoByNumber: state => state.blockInfoByNumber,
+
     getTransactions: state => state.transactions,
 
     getChunkedTransactions: (state) => {
@@ -40,10 +46,15 @@ const getters = {
 
     getNetworkActivity: state => state.networkActivity,
 
-    getUnacceptedTransactions: state => state.unacceptedTransactions
+    getUnacceptedTransactions: state => state.unacceptedTransactions,
+
+    getAddressTransactions: state => state.transactionsByAddress,
+
+    getRecentTransactions: state => state.recentTransactions
 }
 
 const actions = {
+
     fetchBlocks({ commit, state }) {
         axios.get('http://localhost:4444/blocks/number/latest/')
             .then(response => {
@@ -54,10 +65,17 @@ const actions = {
             })
     },
     fetchBlockByHash({ commit }, hashPayload) {
-        axios.get(`http://localhost:4444/blocks/hash/${hashPayload}`)
+        return axios.get(`http://localhost:4444/blocks/hash/${hashPayload}`)
             .then(response => {
                 console.log(response.data.result);
                 commit('setBlockInfo', response.data.result)
+            })
+    },
+    fetchBlockByNumber({ commit }, numberPayload) {
+        return axios.get(`http://localhost:4444/blocks/number/${numberPayload}`)
+            .then(response => {
+                console.log(response.data.result);
+                commit('setBlockInfoByNumber', response.data.result)
             })
     },
     fetchTransactionsByBlockHash({ commit }, hashPayload) {
@@ -97,10 +115,32 @@ const actions = {
                 console.log(response.data);
                 commit('setUnacceptedTransactions', response.data)
             })
+    },
+    fetchTransactionsByAddress ({ commit }, addressHashPayload) {
+        axios.get(`http://localhost:4444/transactions/${addressHashPayload}/1/1`)
+        .then(response => {
+            console.log(response.data);
+            commit('setAddressDetail', response.data)
+        })
+    },
+    fetchRecentTransactions ({ commit }) {
+        axios.get(`http://localhost:4444/transactions/recentxchain`)
+            .then(response => {
+                console.log(response.data);
+                commit('setRecentTransactions', response.data)
+            })
+    },
+    fetchRecentTransactionsFromPChain ({ commit }) {
+        axios.get(`http://localhost:4444/transactions/recentpchain`)
+            .then(response => {
+                console.log(response.data);
+                commit('setRecentTransactions', response.data)
+            })
     }
 }
 
 const mutations = {
+
     setLoaderState(state, propState) {
         state.loader.isLoading = propState
     },
@@ -129,10 +169,25 @@ const mutations = {
     },
     setUnacceptedTransactions (state, unacceptedTransactions) {
         state.unacceptedTransactions = unacceptedTransactions
+    },
+    clearBlockInfo (state) {
+        state.blockInfo = {}
+    },
+    setBlockInfoByNumber (state, blockInfoByNumber) {
+        state.blockInfoByNumber = blockInfoByNumber
+    },
+    setAddressTransactions (state, addressTransactions) {
+        state.transactionsByAddress = addressTransactions
+    },
+    setRecentTransactions (state, transaction) {
+        if (!state.recentTransactions.some(e => e.id === transaction.id)) {
+            state.recentTransactions.unshift(transaction)
+        }
     }
 }
 
 export default {
+
     state,
     getters,
     actions,

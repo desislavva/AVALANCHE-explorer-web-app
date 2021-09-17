@@ -11,7 +11,7 @@
       <Search :searchBarPlaceholderText="this.searchBarPlaceholderText"/>
     </div>
 
-    <Table />
+    <Table :parentComponent="parentComponent"/>
 
     <Footer />
 
@@ -26,23 +26,44 @@ import Table from '../components/TransactionsTable.vue'
 import Search from '../components/SearchBar.vue'
 import NetworkActivity from '../components/NetworkActivity.vue'
 
+import { mapActions } from 'vuex'
+
 export default {
+  
     components: {
       Table,
       Search,
       NetworkActivity
     },
+
     data () {
       return {
         isMounted: false,
-        searchBarPlaceholderText: "tx hash"
+        searchBarPlaceholderText: "tx hash",
+        setIntervalId: null,
+        parentComponent: 'Home'
       }
     },
-  methods: { 
 
+  methods: { 
+    ...mapActions(['fetchRecentTransactions', 'fetchRecentTransactionsFromPChain'])
   },
+
+  computed: {
+  },
+
   mounted() {
     this.isMounted = true;
+  },
+
+  created() {
+    this.setIntervalId = setInterval(() => {
+      this.fetchRecentTransactions()
+      this.fetchRecentTransactionsFromPChain()
+    }, 1000)
+  },
+  beforeDestroy() {
+    clearInterval(this.setIntervalId);
   }
 }
 

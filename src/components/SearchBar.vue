@@ -15,35 +15,57 @@
 
 !--  ****************************** SCRIPT ************************************-->
 <script>
-import { mapActions } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 
 export default {
   data () {
     return {
       inputValue: '',
-      error: 'asdasdsa',
+      error: '',
     }
   },
   props: {
     searchBarPlaceholderText: String
   },
   methods: {
-    onEnter() {
+    async onEnter() {
+      //clear blockinfo
+      this.$store.commit('clearBlockInfo')
+
       if (this.inputValue.slice(0, 2) == '0x') {
         if (/^0x([A-Fa-f0-9]{64})$/.test(this.inputValue)) {
-          //transaction or block hash
 
+          //transaction or block hash
+          await this.$store.dispatch('fetchBlockByHash', this.inputValue)
+
+          if (this.getBlockInfo == null) {
+            this.$router.push({ name: 'Transaction', params: { transactionHash: this.inputValue } })
+          } else {
+            this.$router.push({ name: 'Block', params: { hash: this.inputValue, pageNumber: 1 } })
+          }
+          
         } else {
           //address hash
+          this.$router.push({ name: 'Address', params: { addressHash: this.inputValue} })
         }
-      } else if (this.inputValue.charAt(0) == 'X') {
-        //x-chain address hash
-      } else if (this.inputValue.charAt(0) == 'P') {
-        //p-chain address hash
-      } else if (this.inputValue.match(/^[0-9]+$/) != null) {
+      } else if (this.inputValue.charAt(0) == 'X' || this.inputValue.charAt(0) == 'P') {
+        //x-chain or p-chain address hash
+        this.$router.push({ name: 'Address', params: { addressHash: this.inputValue} })
+
+        //TODO: X-chain and P-chain tx hash !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      } 
+      else if (this.inputValue.match(/^[0-9]+$/) != null) {
         //c-chain block number
+        await this.$store.dispatch('fetchBlockByNumber', this.inputValue)
+
+        this.$router.push({ name: 'Block', params: { hash: this.getBlockInfoByNumber.hash, pageNumber: 1 } })
       }
     }
+  },
+  computed: {
+    ...mapGetters(['getBlockInfo', 'getTransactionInfo', 'getBlockInfoByNumber'])
+  },
+  created() {
   }
 }
 </script>
