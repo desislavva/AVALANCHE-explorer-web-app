@@ -56,7 +56,7 @@ const getters = {
 const actions = {
 
     fetchBlocks({ commit, state }) {
-        axios.get('http://localhost:4444/blocks/number/latest/')
+        axios.get(`${process.env.VUE_APP_REST_API_URL}/blocks/number/latest/`)
             .then(response => {
                 if (state.blocks.length > 6) {
                     commit('clearBlocksArray')
@@ -65,14 +65,14 @@ const actions = {
             })
     },
     fetchBlockByHash({ commit }, hashPayload) {
-        return axios.get(`http://localhost:4444/blocks/hash/${hashPayload}`)
+        return axios.get(`${process.env.VUE_APP_REST_API_URL}/blocks/hash/${hashPayload}`)
             .then(response => {
                 console.log(response.data.result);
                 commit('setBlockInfo', response.data.result)
             })
     },
     fetchBlockByNumber({ commit }, numberPayload) {
-        return axios.get(`http://localhost:4444/blocks/number/${numberPayload}`)
+        return axios.get(`${process.env.VUE_APP_REST_API_URL}/blocks/number/${numberPayload}`)
             .then(response => {
                 console.log(response.data.result);
                 commit('setBlockInfoByNumber', response.data.result)
@@ -80,7 +80,7 @@ const actions = {
     },
     fetchTransactionsByBlockHash({ commit }, hashPayload) {
         setTimeout(() => {
-            axios.get(`http://localhost:4444/blocks/hash/${hashPayload}`)
+            axios.get(`${process.env.VUE_APP_REST_API_URL}/blocks/hash/${hashPayload}`)
             .then(response => {
                 console.log(response.data.result.transactions);
                 commit('setTransactions', response.data.result.transactions)
@@ -89,49 +89,49 @@ const actions = {
         })}, 1000)
     },
     fetchTransactionInfoByHash({ commit }, hashPayload) {
-        return axios.get(`http://localhost:4444/transactions/hash/${hashPayload}`)
+        return axios.get(`${process.env.VUE_APP_REST_API_URL}/transactions/hash/${hashPayload}`)
         .then(response => {
             console.log(response.data.result);
             commit('setTransactionInfo', response.data.result)
         })
     },
     fetchAddressDetails({ commit }, hashPayload) {
-        axios.get(`http://localhost:4444/address/hash/${hashPayload}`)
+        axios.get(`${process.env.VUE_APP_REST_API_URL}/address/hash/${hashPayload}`)
             .then(response => {
                 console.log(response.data);
                 commit('setAddressDetail', response.data)
             })
     },
     fetchNetworkActivity({ commit }) {
-        axios.get(`http://localhost:4444/network`)
+        axios.get(`${process.env.VUE_APP_REST_API_URL}/network`)
             .then(response => {
                 console.log(response.data);
                 commit('setNetworkActivity', response.data)
             })
     },
     fetchUnacceptedTransactions({ commit }) {
-        axios.get(`http://localhost:4444/transactions/999/999`)
+        axios.get(`${process.env.VUE_APP_REST_API_URL}/transactions/999/999`)
             .then(response => {
                 console.log(response.data);
                 commit('setUnacceptedTransactions', response.data)
             })
     },
     fetchTransactionsByAddress ({ commit }, addressHashPayload) {
-        axios.get(`http://localhost:4444/transactions/${addressHashPayload}/1/1`)
+        axios.get(`${process.env.VUE_APP_REST_API_URL}/transactions/${addressHashPayload}/1/1`)
         .then(response => {
             console.log(response.data);
             commit('setAddressDetail', response.data)
         })
     },
     fetchRecentTransactions ({ commit }) {
-        axios.get(`http://localhost:4444/transactions/recentxchain`)
+        axios.get(`${process.env.VUE_APP_REST_API_URL}/transactions/recentxchain`)
             .then(response => {
                 console.log(response.data);
                 commit('setRecentTransactions', response.data)
             })
     },
     fetchRecentTransactionsFromPChain ({ commit }) {
-        axios.get(`http://localhost:4444/transactions/recentpchain`)
+        axios.get(`${process.env.VUE_APP_REST_API_URL}/transactions/recentpchain`)
             .then(response => {
                 console.log(response.data);
                 commit('setRecentTransactions', response.data)
