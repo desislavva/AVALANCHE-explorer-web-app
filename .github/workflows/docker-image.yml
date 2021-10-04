@@ -17,7 +17,7 @@ jobs:
     - name: Create env file
       run: |
         touch .env
-        echo VUE_APP_REST_API_URL="http://node3.blackseachain.com:4444" >> .env
+        echo VUE_APP_REST_API_URL="${{secrets.REST_API_URL}}" >> .env
         cat .env
     - name: Docker login
       env:
@@ -26,6 +26,6 @@ jobs:
       run: |
         docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag cr0c0pk1/avalanche-explorer-web-app
+      run: docker build . --file Dockerfile --tag ${{secrets.DOCKER_USER}}/avalanche-explorer-web-app
     - name: Docker push
       run: docker push ${{secrets.DOCKER_USER}}/avalanche-explorer-web-app
