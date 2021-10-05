@@ -19,6 +19,12 @@ jobs:
         touch .env
         echo VUE_APP_REST_API_URL="${{secrets.REST_API_URL}}" >> .env
         cat .env
+
+    - name: Run tests
+      run: |
+        npm ci
+        npm run test
+        
     - name: Docker login
       env:
         DOCKER_USER: ${{secrets.DOCKER_USER}}
