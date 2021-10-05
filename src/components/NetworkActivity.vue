@@ -25,7 +25,7 @@
 import { mapGetters, mapActions, mapMutations } from 'vuex'
 
 import Loading from 'vue-loading-overlay'
-import 'vue-loading-overlay/dist/vue-loading.css'
+//import 'vue-loading-overlay/dist/vue-loading.css'
 
 export default {
     data () {
@@ -59,6 +59,7 @@ export default {
 </script>
 
 <style scoped>
+@import 'vue-loading-overlay/dist/vue-loading.css';
 
 .back {
   background-color: rgba(255,255,255, 0.76);
