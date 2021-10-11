@@ -24,3 +24,5 @@ pnpm-debug.log*
 
 # Environment file
 .env
+#Test coverage
+coverage

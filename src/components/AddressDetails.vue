@@ -6,7 +6,7 @@
     
     <h3 v-if="getChainType() == 'C'"> Balance: <label> {{ getAddressDetails[0].slice(0, 10) }} AVAX</label> </h3>
 
-    <div v-for="(addressDetails, index) in getAddressDetails[0]" :key="index">
+    <div v-for="(addressDetails, index) in getAddressDetails[0]" :key="index" id="X chain">
       <h3 v-if="getChainType() == 'X'"> Balance: <label> {{ addressDetails.balance.slice(0, 8) }} {{ addressDetails.asset }}</label> </h3>
     </div>
 
