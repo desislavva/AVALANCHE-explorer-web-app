@@ -17,6 +17,10 @@ import BlockDetails from '../src/components/BlockDetails.vue';
 import AddressDetails from '../src/components/AddressDetails.vue';
 import TransactionDetails from '../src/components/TransactionDetails.vue';
 import TransactionsTable from '../src/components/TransactionsTable.vue';
+import BlocksTable from '../src/components/BlocksTable.vue';
+import UnacceptedTransactionsTable from '../src/components/UnacceptedTransactionsTable.vue';
+import AssetsTable from '../src/components/AssetsTable.vue';
+
 
 import Vuex from 'vuex';
 
@@ -37,7 +41,8 @@ const store = new Vuex.Store({
         },
         addressDetail: {
             balance: 100000000,
-            asset: 'P'
+            asset: 'P',
+            assetID: 1
         },
         transactionInfo:{
               hash:'0x2bd8e867d0b96bc8298c3cc1e1e976a36f82c70dc9e961088b73b15abc0dcbcb',
@@ -52,31 +57,124 @@ const store = new Vuex.Store({
                 from: 'adr1',
                 to: 'adr2',
                 blockHash: 'hhhhhhhhh',
-                value: 100
+                value: 100,
+                id:1
           },
           {
             hash:'0x2bd8e867d0b96bc8298c3cc1e1e976a36f82c70dc9e961088b73b15abc0dcbcb',
             from: 'adr1',
             to: 'adr2',
             blockHash: 'hhhhhhhhh',
-            value: 100
+            value: 100,
+            id:2
+          }
+        ],
+        blocks:[[
+            {
+                hash:'0x2bd8e867d0b96bc8298c3cc1e1e976a36f82c70dc9e961088b73b15abc0dcbcb',
+                from: 'adr1',
+                to: 'adr2',
+                blockHash: 'hhhhhhhhh',
+                value: 100,
+                id:1,
+                number: 104
+          },{
+            hash:'0x2bd8e867d0b96bc8298c3cc1e1e976a36f82c70dc9e961088b73b15abc0dcbcb',
+            from: 'adr1',
+            to: 'adr2',
+            blockHash: 'hhhhhhhhh',
+            value: 100,
+            id:2,
+            number: 103
       }
+        ],[
+            {
+                hash:'0x2bd8e867d0b96bc8298c3cc1e1e976a36f82c70dc9e961088b73b15abc0dcbcb',
+                from: 'adr1',
+                to: 'adr2',
+                blockHash: 'hhhhhhhhh',
+                value: 100,
+                id:1,
+                number: 102
+          },{
+            hash:'0x2bd8e867d0b96bc8298c3cc1e1e976a36f82c70dc9e961088b73b15abc0dcbcb',
+            from: 'adr1',
+            to: 'adr2',
+            blockHash: 'hhhhhhhhh',
+            value: 100,
+            id:2,
+            number: 101
+      }
+        ]],
+        addressDetails:[
+            {
+                balance: 100000000,
+                asset: 'P',
+                assetID: 1,
+                name:'P chain',
+                symbol: 'X'
+            },
+            {
+                balance: 200000000,
+                asset: 'X',
+                assetID: 2,
+                name:'X chain',
+                symbol: 'X'
+            }
+        ],
+        loader: {
+            isLoading: false,
+            fullPage: true,
+            color: '#ff0000'
+        },
+        networkActivity:[
+            '123546789','1234567','6568798','132456'
         ]
     
     }
     ,  
     getters: {
         getBlockInfo: (state) => state.blockInfo,
-        getAddressDetails: (state) => state.addressDetail,
+        getAddressDetails: (state) => state.addressDetails,
         getTransactionInfo: (state) => state.transactionInfo,
-        getTransactions: state => state.transactions,
+        getTransactions: (state) => state.transactions,
         getChunkedTransactions: (state) => state.transactions,
-        getAddressTransactions: state => state.transactions,
-        getRecentTransactions: state => state.transactions
+        getAddressTransactions: (state) => state.transactions,
+        getRecentTransactions: (state) => state.transactions,
+        blocksList: (state) => state.blocks,
+        chunkedBlocks: (state) =>state.blocks,
+        getUnacceptedTransactions: state => state.transactions,
+        getLoader: state => state.loader,
+        getNetworkActivity: state => state.networkActivity,
+        getBlockInfoByNumber: state => state.blockInfo
+    },
+    actions:{
+        fetchBlocks(){},
+        fetchUnacceptedTransactions(){},
+        fetchNetworkActivity(){},
+        fetchBlockByHash({ commit }, hashPayload) {
+            if(hashPayload===0x2bd8e867d0b96bc8298c3cc1e1e976a36f82c70dc9e961088b73b15abc0dcbcb){
+                commit('setBlockInfo', null);
+            }
+        },
+        fetchBlockByNumber(){}
+    },
+    mutations:{
+        setLoaderState(state, propState) {
+            state.loader.isLoading = propState
+        },
+        setBlockInfo (state, blockInfo) {
+            state.blockInfo = blockInfo
+        },
+        clearBlockInfo (state) {
+            state.blockInfo = {}
+        }
     }
   })
 
-
+  afterEach(() => {
+    jest.useRealTimers();
+  });
 
 jest.mock("vue-loading-overlay/dist/vue-loading.css", () => jest.fn());
 
@@ -179,9 +277,11 @@ describe('Does the AddressDetails component work?', () => {
             },
              store, localVue 
         });
-
         const div = wrapper.find('div');
         expect(div.text()).toContain('1');
+        wrapper.destroy();
+
+
         
     });
 });
@@ -196,9 +296,12 @@ describe('Does the TransactionDetails component work?', () => {
             },
              store, localVue 
         });
-
         const div = wrapper.find('div');
         expect(div.text()).toContain('adr1');
+       
+
+
+    
         
     });
 });
@@ -227,7 +330,7 @@ describe('Does the TransactionsTable component work?', () => {
 
         const table = wrapper.find('table');
         expect(table.text()).toContain('C');
-        
+        wrapper.destroy();
     });
 });
 
@@ -260,3 +363,115 @@ describe('Does the Pagination component work?', () => {
         
     });
 });
+
+
+describe('Does the BlocksTable component work?', () => {
+    it('Should display info.', async () => {
+        jest.useFakeTimers();
+        const wrapper = shallowMount(BlocksTable, {
+            
+             store, localVue ,
+            router
+            
+        });
+        jest.advanceTimersByTime(2000);
+        const table = wrapper.find('table');
+        expect(table.text()).toContain('0x2bd8e867d0b96bc8298c3cc1e1e976a36f82c70dc9e961088b73b15abc0dcbcb');
+        wrapper.destroy();
+        
+    });
+});
+
+describe('Does the UnacceptedTransactionsTable component work?', () => {
+    it('Should display info.', async () => {
+        jest.useFakeTimers();
+        const wrapper = shallowMount(UnacceptedTransactionsTable, {
+            
+             store, localVue ,
+            router
+            
+        });
+        jest.advanceTimersByTime(2000);
+        const table = wrapper.find('table');
+        expect(table.text()).toContain('0x2bd8e867d0b96bc8298c3cc1e1e976a36f82c70dc9e961088b73b15abc0dcbcb');
+        wrapper.destroy();
+        
+    });
+});
+
+
+describe('Does the AssetsTable component work?', () => {
+    it('Should display info.',  () => {
+        
+        const wrapper = shallowMount(AssetsTable, {
+            
+             store, localVue ,
+            router
+            
+        });
+        
+        const table = wrapper.find('table');
+        expect(table.text()).toContain('X chain');
+        
+        
+    });
+});
+
+describe('Does the NetworkActivity component work?', () => {
+    it('Should display info.',  () => {
+        jest.useFakeTimers();
+        const wrapper = shallowMount(NetworkActivity, {
+            
+             store, localVue ,
+            router
+            
+        });
+        jest.advanceTimersByTime(2000);
+        const h1 = wrapper.find('h1');
+        expect(h1.text()).toContain('12354678');
+        wrapper.destroy();
+        
+    });
+});
+
+describe('Does the Search component work?', () => {
+    it('Should push router.', async () => {
+        
+        const wrapper = shallowMount(Search, {
+            
+             store, localVue ,
+            router
+            
+        });
+        
+        const search = wrapper.find('input');
+        await search.setValue('65164687');
+        await search.trigger('keyup.enter');
+        expect(wrapper.vm.$route.name).toBe('Block');
+
+
+        await search.setValue('0x6516468732423');
+        await search.trigger('keyup.enter');
+        expect(wrapper.vm.$route.name).toBe('Address');
+
+        await search.setValue('P-6516468732423');
+        await search.trigger('keyup.enter');
+        expect(wrapper.vm.$route.name).toBe('Address');
+
+        await search.setValue('0x2bd8e867d0b96bc8298c3cc1e1e976a36f82c70dc9e961088b73b15abc0dcbcb');
+        await search.trigger('keyup.enter');
+        expect(wrapper.vm.$route.name).toBe('Address');
+
+
+
+
+        //expect(router.push).toHaveBeenCalled();
+        //expect(push).toHaveBeenCalledWith('/the-desired-path');
+        //expect(wrapper.find("input").element.value).toMatch("65164687");
+        //expect(h1.text()).toContain('12354678');
+        
+        
+    });
+});
+
+
