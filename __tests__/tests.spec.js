@@ -3,6 +3,9 @@ import { mount, shallowMount, createLocalVue } from '@vue/test-utils';
 import Home from '../src/pages/Home.vue';
 import Main from '../src/pages/Main.vue';
 import Pchain from '../src/pages/P-chain.vue';
+import CChain from '../src/pages/C-chain.vue';
+import XChain from '../src/pages/X-chain.vue';
+import Address from '../src/pages/Address.vue';
 
 
 import NetworkActivity from '../src/components/NetworkActivity.vue';
@@ -17,10 +20,9 @@ import BlockDetails from '../src/components/BlockDetails.vue';
 import AddressDetails from '../src/components/AddressDetails.vue';
 import TransactionDetails from '../src/components/TransactionDetails.vue';
 import TransactionsTable from '../src/components/TransactionsTable.vue';
+import Assets from '../src/components/AssetsTable.vue';
 import BlocksTable from '../src/components/BlocksTable.vue';
 import UnacceptedTransactionsTable from '../src/components/UnacceptedTransactionsTable.vue';
-import AssetsTable from '../src/components/AssetsTable.vue';
-
 
 import Vuex from 'vuex';
 
@@ -31,8 +33,12 @@ localVue.use(Vuex)
 const store = new Vuex.Store({
    
     state: {
-       
-        blockInfo:{
+        loader: {
+            isLoading: false,
+            fullPage: true,
+            color: '#ff0000'
+        },
+        blockInfo: {
             number: 25,
             size: 1024,
             parentHash: 'hash',
@@ -194,6 +200,73 @@ describe('Pchain', () => {
     });
 });
 
+describe('CChain', () => {
+    it('should pass placeholder text value', () => {
+        const wrapper = shallowMount(CChain);
+
+        wrapper.setData({ searchBarPlaceholderText: 'txhash' });
+
+        expect(wrapper.vm.searchBarPlaceholderText).toMatch('txhash');
+    });
+});
+
+describe('CChain: contains blocksTable child component', () => {
+    it('should pass placeholder text value', () => {
+        const wrapper = shallowMount(CChain);
+
+        expect(wrapper.findComponent(BlocksTable).exists()).toBe(true);
+    });
+});
+
+describe('CChain: contains transactionsTable child component', () => {
+    it('should pass placeholder text value', () => {
+        const wrapper = shallowMount(CChain);
+
+        expect(wrapper.findComponent(TransactionsTable).exists()).toBe(true);
+    });
+});
+
+describe('CChain: contains UnacceptedTransactionsTable child component', () => {
+    it('should pass placeholder text value', () => {
+        const wrapper = shallowMount(CChain);
+
+        expect(wrapper.findComponent(UnacceptedTransactionsTable).exists()).toBe(true);
+    });
+});
+
+describe('XChain', () => {
+    it('should pass placeholder text value', () => {
+        const wrapper = shallowMount(XChain);
+
+        wrapper.setData({ searchBarPlaceholderText: 'txhash' });
+
+        expect(wrapper.vm.searchBarPlaceholderText).toMatch('txhash');
+    });
+});
+
+describe('XChain: contains transactionsTable child component', () => {
+    it('should pass placeholder text value', () => {
+        const wrapper = shallowMount(XChain);
+
+        expect(wrapper.findComponent(TransactionsTable).exists()).toBe(true);
+    });
+});
+
+describe('Address page: test', () => {
+    it ('Should test', () => {
+        const wrapper = shallowMount(Address, {
+            mocks: {
+                $route: {
+                    params: {
+                        addressHash: 'P-avax1g8g57pnafnzsqwceyg2thkn90sq0uet62exszs'
+                    }
+                }
+            },
+             store, localVue 
+        });
+    });
+});
+
 describe('Is Home component a vue instance & mounted', () => {
         it('Should be a Vue instance and mounted', () => {
             const wrapper = shallowMount(Home);
@@ -249,8 +322,6 @@ describe('Does main page contain Footer component', () => {
         expect(wrapper.findComponent(Footer).exists()).toBe(true);
     });
 });
-
-
 
 describe('Does the Block component work?', () => {
     it('Should display info.', () => {
