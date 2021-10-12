@@ -6,7 +6,8 @@ import Pchain from '../src/pages/P-chain.vue';
 import CChain from '../src/pages/C-chain.vue';
 import XChain from '../src/pages/X-chain.vue';
 import Address from '../src/pages/Address.vue';
-
+import Block from '../src/pages/Block.vue';
+import Transaction from '../src/pages/Transaction.vue';
 
 import NetworkActivity from '../src/components/NetworkActivity.vue';
 import Search from '../src/components/SearchBar.vue';
@@ -22,6 +23,7 @@ import TransactionDetails from '../src/components/TransactionDetails.vue';
 import TransactionsTable from '../src/components/TransactionsTable.vue';
 import Assets from '../src/components/AssetsTable.vue';
 import BlocksTable from '../src/components/BlocksTable.vue';
+
 import UnacceptedTransactionsTable from '../src/components/UnacceptedTransactionsTable.vue';
 
 import Vuex from 'vuex';
@@ -157,7 +159,9 @@ const store = new Vuex.Store({
     actions:{
         fetchBlocks(){},
         fetchUnacceptedTransactions(){},
+        fetchAddressDetails(){},
         fetchNetworkActivity(){},
+        fetchTransactionInfoByHash(){},
         fetchBlockByHash({ commit }, hashPayload) {
             if(hashPayload===0x2bd8e867d0b96bc8298c3cc1e1e976a36f82c70dc9e961088b73b15abc0dcbcb){
                 commit('setBlockInfo', null);
@@ -180,6 +184,7 @@ const store = new Vuex.Store({
 
   afterEach(() => {
     jest.useRealTimers();
+   
   });
 
 jest.mock("vue-loading-overlay/dist/vue-loading.css", () => jest.fn());
@@ -254,16 +259,17 @@ describe('XChain: contains transactionsTable child component', () => {
 
 describe('Address page: test', () => {
     it ('Should test', () => {
+        jest.useFakeTimers();
+        router.push({name: 'Address', params: {addressHash: 'X-avax1g8g57pnafnzsqwceyg2thkn90sq0uet62exszs'}});
+
         const wrapper = shallowMount(Address, {
-            mocks: {
-                $route: {
-                    params: {
-                        addressHash: 'P-avax1g8g57pnafnzsqwceyg2thkn90sq0uet62exszs'
-                    }
-                }
-            },
+           router,
              store, localVue 
         });
+        jest.advanceTimersByTime(2000);
+
+       
+        wrapper.destroy();
     });
 });
 
@@ -338,8 +344,55 @@ describe('Does the Block component work?', () => {
     });
 });
 
-describe('Does the AddressDetails component work?', () => {
+describe('Test Block page', () => {
     it('Should display info.', () => {
+        router.push({name: 'Block', params: {hash: '0xsa61d5adw3a15w42a',pageNumber: 2}});
+        
+        const wrapper = shallowMount(Block, {
+            
+             store, localVue ,router
+        });
+
+        const div = wrapper.find('div');
+        expect(div.text()).toContain('Block Transactions');
+        
+    });
+});
+
+describe('Test Transaction page', () => {
+    it('Should display info.', () => {
+        router.push({name: 'Transaction', params: {transactionHash: '0xsa61d5adw3a15w42a'}});
+        
+        const wrapper = shallowMount(Transaction, {
+            
+             store, localVue ,router
+        });
+
+        const div = wrapper.find('div');
+        expect(wrapper.findComponent(TransactionDetails).exists()).toBe(true);
+      
+        
+    });
+});
+
+describe('Test Home page', () => {
+    it('Should display info.', () => {
+        jest.useFakeTimers();
+        
+        const wrapper = shallowMount(Home, {
+            
+             store, localVue ,router
+        });
+        jest.advanceTimersByTime(2000);
+        const div = wrapper.find('div');
+       
+       expect(div.text()).toContain('Recent Transactions');
+       wrapper.destroy();
+    });
+});
+
+describe('Does the AddressDetails component work?', () => {
+    it('Should display info for P-chain.', async () => {
 
         
         const wrapper = shallowMount(AddressDetails, {
@@ -347,12 +400,15 @@ describe('Does the AddressDetails component work?', () => {
                 addressHash: 'P-avax1g8g57pnafnzsqwceyg2thkn90sq0uet62exszs'
             },
              store, localVue 
+            
         });
         const div = wrapper.find('div');
-        expect(div.text()).toContain('1');
-        wrapper.destroy();
-
-
+        expect(div.text()).toContain('P-avax1g8g57pnafnzsqwceyg2thkn90sq0uet62exszs');
+       
+       await wrapper.setProps({ addressHash: '0xavax1g8g57pnafnzsqwceyg2thkn90sq0uet62exszs' });
+       
+       await wrapper.setProps({ addressHash: 'X-avax1g8g57pnafnzsqwceyg2thkn90sq0uet62exszs' });
+  
         
     });
 });
@@ -431,6 +487,9 @@ describe('Does the Pagination component work?', () => {
         expect(span.text()).toContain('1');
         await wrapper.find('button').trigger('click');
         expect(span.text()).toContain('0');
+        await wrapper.findAll('button').at(1).trigger('click');
+        expect(span.text()).toContain('1');
+        
         
     });
 });
@@ -474,7 +533,7 @@ describe('Does the UnacceptedTransactionsTable component work?', () => {
 describe('Does the AssetsTable component work?', () => {
     it('Should display info.',  () => {
         
-        const wrapper = shallowMount(AssetsTable, {
+        const wrapper = shallowMount(Assets, {
             
              store, localVue ,
             router
@@ -536,10 +595,7 @@ describe('Does the Search component work?', () => {
 
 
 
-        //expect(router.push).toHaveBeenCalled();
-        //expect(push).toHaveBeenCalledWith('/the-desired-path');
-        //expect(wrapper.find("input").element.value).toMatch("65164687");
-        //expect(h1.text()).toContain('12354678');
+       
         
         
     });
