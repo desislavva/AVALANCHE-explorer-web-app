@@ -3,7 +3,8 @@
          <router-link to="/"> Home </router-link> |
          <router-link to="/c-chain"> C-Chain </router-link> |
          <router-link to="/p-chain"> P-Chain </router-link> |
-         <router-link to="/x-chain"> X-chain </router-link>     
+         <router-link to="/x-chain"> X-chain </router-link> |
+         <button v-on:click="change">Switch to {{ buttonValue }}</button> 
   </div> 
 </template>
 
@@ -12,8 +13,41 @@
 <-- ***************************** SCRIPT ******************************** --> 
 
 <script>
+import { mapMutations, mapGetters, mapActions, mapState } from 'vuex'
+import BlocksModule from '../../store/modules/blocks'
+
     export default {
-        
+      data: function() {
+        return {
+          buttonValue: ''
+        }
+      },
+      methods: {
+        change: function() {
+          if(this.toggleAlias === true) {
+            this.$store.commit('setToggleState', false);
+            this.buttonValue = 'Websocket';
+            window.location.reload();
+          } else {
+            this.$store.commit('setToggleState', true);
+            this.buttonValue = 'HTTP';
+            window.location.reload();
+          }
+        }
+      },
+      computed: {
+        ...mapMutations({setState: 'setToggleState'}),
+        ...mapState({
+          toggleAlias: state => state.BlocksModule.isWebSocketToggleOn
+        })
+      },
+      created() {
+        if(this.toggleAlias === true) {
+          this.buttonValue = 'HTTP';
+        } else {
+          this.buttonValue = 'Websocket';
+        }
+      }
     }
 </script>
 
