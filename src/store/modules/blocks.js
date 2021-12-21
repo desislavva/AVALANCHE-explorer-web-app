@@ -1,12 +1,11 @@
 import axios from 'axios'
 
-
 const chunk = require('chunk');
 
 let storageValue
-let checkValue = JSON.parse(localStorage.getItem('vuex'))
+let checkValue = JSON.parse(localStorage.getItem('blocks'))
 
-if (checkValue.BlocksModule.isWebSocketToggleOn === null) {
+if (checkValue === null || checkValue === undefined) {
     storageValue = false
 } else {
     storageValue = checkValue.BlocksModule.isWebSocketToggleOn
@@ -75,6 +74,30 @@ if (state.isWebSocketToggleOn) {
                 commit('setNetworkActivity', JSON.parse(data.data))
             }
 
+        },
+        fetchRecentTransactions({ commit }) {
+            this.$socket.send(JSON.stringify({method: "getRecentTransactionsFromXChain"}))
+            this.$socket.onmessage = (data) => {
+                console.log(JSON.parse(data.data))
+
+                let parsedData;
+
+                parsedData = JSON.parse(data.data);
+                parsedData.id = `ws${parsedData.id}`
+                commit('setRecentTransactions', parsedData)
+            }
+        },
+        fetchRecentTransactionsFromPChain ({ commit }) {
+            this.$socket.send(JSON.stringify({method: "getRecentTransactionsFromPChain"}))
+            this.$socket.onmessage = (data) => {
+                console.log(JSON.parse(data.data))
+
+                let parsedData;
+
+                parsedData = JSON.parse(data.data);
+                parsedData.id = `ws${parsedData.id}`
+                commit('setRecentTransactions', parsedData)
+            }
         }
     }
 } else {
@@ -93,6 +116,13 @@ if (state.isWebSocketToggleOn) {
                     commit('setRecentTransactions', response.data)
                 })
         },
+        fetchRecentTransactionsFromPChain ({ commit }) {
+            axios.get(`${process.env.VUE_APP_REST_API_URL}/transactions/recentpchain`)
+                .then(response => {
+                    console.log(response.data);
+                    commit('setRecentTransactions', response.data)
+                })
+        }
     }
 }
 
