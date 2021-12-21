@@ -2,17 +2,17 @@
 <template>
   <div class="info">
     <h2> {{ getTransactionInfo.hash }} </h2>
-    
+
     <h3> Value: <label> {{ findValueInAVAX() }} AVAX</label> </h3>
-    
+
     <h3> From: <label><router-link :to="{ name: 'Address', params: { addressHash: getTransactionInfo.from } }"> {{ getTransactionInfo.from }} </router-link> </label> </h3>
-    
+
     <h3> To: <label><router-link :to="{ name: 'Address', params: { addressHash: getTransactionInfo.to } }"> {{ getTransactionInfo.to }} </router-link></label> </h3>
-    
+
     <h3> Block: <label> <router-link :to="{ name: 'Block', params: { hash: getTransactionInfo.blockHash } }">{{ getTransactionInfo.blockHash }} </router-link></label> </h3>
 
     <h3> Blockchain: <label> {{ findBlockchain() }} </label> </h3>
-  </div> 
+  </div>
 </template>
 
 <--  ****************************** SCRIPT ************************************-->
@@ -43,7 +43,7 @@ export default {
     ...mapGetters(['getTransactionInfo'])
   },
   created() {
-    
+
   }
 }
 </script>

@@ -60,7 +60,7 @@ const getters = {
     getAddressTransactions: state => state.transactionsByAddress,
 
     getRecentTransactions: state => state.recentTransactions,
-    
+
     getToggle: state => state.isWebSocketToggleOn,
 }
 let actions = {}
@@ -98,9 +98,23 @@ if (state.isWebSocketToggleOn) {
                 parsedData.id = `ws${parsedData.id}`
                 commit('setRecentTransactions', parsedData)
             }
+        },
+
+        fetchTransactionInfoByHash({ commit }, thash) {
+            this.$socket.send(JSON.stringify({method: "getTransactionByHash", params: {hash: thash}}))
+            this.$socket.onmessage = (data) => {
+                console.log(JSON.parse(data.data))
+
+                let parsedData;
+
+                parsedData = JSON.parse(data.data);
+                parsedData.id = `ws${parsedData.id}`
+                commit('setTransactionInfo', parsedData)
+            }
         }
     }
-} else {
+ }
+ else {
     actions = {
         fetchNetworkActivity({ commit }) {
             axios.get(`${process.env.VUE_APP_REST_API_URL}/network`)
@@ -122,7 +136,14 @@ if (state.isWebSocketToggleOn) {
                     console.log(response.data);
                     commit('setRecentTransactions', response.data)
                 })
-        }
+        },
+        fetchTransactionInfoByHash({ commit }, hash) {
+            axios.get(`${process.env.VUE_APP_REST_API_URL}/transactions/hash/${hash}`)
+                .then(response => {
+                    console.log(response.data.result);
+                    commit('setTransactionInfo', response.data)
+                })
+        },
     }
 }
 
