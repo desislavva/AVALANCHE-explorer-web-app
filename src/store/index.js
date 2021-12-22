@@ -9,9 +9,5 @@ store = new Vuex.Store({
             modules: {
                 BlocksModule
             },
-            plugins: [createPersistedState({
-                key: 'blocks',
-                paths: ['BlocksModule.isWebSocketToggleOn']
-            })]
         })
 export default store;

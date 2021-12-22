@@ -27,11 +27,9 @@ import BlocksModule from '../../store/modules/blocks'
           if(this.toggleAlias === true) {
             this.$store.commit('setToggleState', false);
             this.buttonValue = 'Websocket';
-            window.location.reload();
           } else {
             this.$store.commit('setToggleState', true);
             this.buttonValue = 'HTTP';
-            window.location.reload();
           }
         }
       },

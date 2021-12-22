@@ -2,17 +2,8 @@ import axios from 'axios'
 
 const chunk = require('chunk');
 
-let storageValue
-let checkValue = JSON.parse(localStorage.getItem('blocks'))
-
-if (checkValue === null || checkValue === undefined) {
-    storageValue = false
-} else {
-    storageValue = checkValue.BlocksModule.isWebSocketToggleOn
-}
-
 const state = {
-    isWebSocketToggleOn: storageValue,
+    isWebSocketToggleOn: false,
     loader: {
         isLoading: false,
         fullPage: true,
@@ -63,89 +54,87 @@ const getters = {
 
     getToggle: state => state.isWebSocketToggleOn,
 }
-let actions = {}
 
-if (state.isWebSocketToggleOn) {
-    actions = {
+const actions = {
         fetchNetworkActivity({ commit }) {
-            this.$socket.send(JSON.stringify({method: "getNetWorkActivity"}))
-            this.$socket.onmessage = (data) => {
-                console.log(JSON.parse(data.data))
-                commit('setNetworkActivity', JSON.parse(data.data))
-            }
-
-        },
-        fetchRecentTransactions({ commit }) {
-            this.$socket.send(JSON.stringify({method: "getRecentTransactionsFromXChain"}))
-            this.$socket.onmessage = (data) => {
-                console.log(JSON.parse(data.data))
-
-                let parsedData;
-
-                parsedData = JSON.parse(data.data);
-                parsedData.id = `ws${parsedData.id}`
-                commit('setRecentTransactions', parsedData)
-            }
-        },
-        fetchRecentTransactionsFromPChain ({ commit }) {
-            this.$socket.send(JSON.stringify({method: "getRecentTransactionsFromPChain"}))
-            this.$socket.onmessage = (data) => {
-                console.log(JSON.parse(data.data))
-
-                let parsedData;
-
-                parsedData = JSON.parse(data.data);
-                parsedData.id = `ws${parsedData.id}`
-                commit('setRecentTransactions', parsedData)
-            }
-        },
-
-        fetchTransactionInfoByHash({ commit }, thash) {
-            this.$socket.send(JSON.stringify({method: "getTransactionByHash", params: {hash: thash}}))
-            this.$socket.onmessage = (data) => {
-                console.log(JSON.parse(data.data))
-
-                let parsedData;
-
-                parsedData = JSON.parse(data.data);
-                parsedData.id = `ws${parsedData.id}`
-                commit('setTransactionInfo', parsedData)
-            }
-        }
-    }
- }
- else {
-    actions = {
-        fetchNetworkActivity({ commit }) {
-            axios.get(`${process.env.VUE_APP_REST_API_URL}/network`)
+            if (state.isWebSocketToggleOn) {
+                this.$socket.send(JSON.stringify({method: "getNetWorkActivity"}))
+                this.$socket.onmessage = (data) => {
+                    console.log(JSON.parse(data.data))
+                    commit('setNetworkActivity', JSON.parse(data.data))
+                }
+            } else {
+                axios.get(`${process.env.VUE_APP_REST_API_URL}/network`)
                 .then(response => {
                     console.log(response.data);
                     commit('setNetworkActivity', response.data)
                 })
+            }
         },
-        fetchRecentTransactions ({ commit }) {
-            axios.get(`${process.env.VUE_APP_REST_API_URL}/transactions/recentxchain`)
+
+        fetchRecentTransactions({ commit }) {
+            if (state.isWebSocketToggleOn) {
+                this.$socket.send(JSON.stringify({method: "getRecentTransactionsFromXChain"}))
+                this.$socket.onmessage = (data) => {
+                    console.log(JSON.parse(data.data))
+
+                    let parsedData;
+
+                    parsedData = JSON.parse(data.data);
+                    parsedData.id = `ws${parsedData.id}`
+                    commit('setRecentTransactions', parsedData)
+                }
+            } else {
+                axios.get(`${process.env.VUE_APP_REST_API_URL}/transactions/recentxchain`)
                 .then(response => {
                     console.log(response.data);
                     commit('setRecentTransactions', response.data)
                 })
+            }
         },
+
         fetchRecentTransactionsFromPChain ({ commit }) {
-            axios.get(`${process.env.VUE_APP_REST_API_URL}/transactions/recentpchain`)
+            if (state.isWebSocketToggleOn) {
+                this.$socket.send(JSON.stringify({method: "getRecentTransactionsFromPChain"}))
+                this.$socket.onmessage = (data) => {
+                    console.log(JSON.parse(data.data))
+    
+                    let parsedData;
+    
+                    parsedData = JSON.parse(data.data);
+                    parsedData.id = `ws${parsedData.id}`
+                    commit('setRecentTransactions', parsedData)
+                }
+            } else {
+                axios.get(`${process.env.VUE_APP_REST_API_URL}/transactions/recentpchain`)
                 .then(response => {
                     console.log(response.data);
                     commit('setRecentTransactions', response.data)
                 })
+            }
         },
-        fetchTransactionInfoByHash({ commit }, hash) {
-            axios.get(`${process.env.VUE_APP_REST_API_URL}/transactions/hash/${hash}`)
+
+        fetchTransactionInfoByHash({ commit }, thash) {
+            if (state.isWebSocketToggleOn) {
+                this.$socket.send(JSON.stringify({method: "getTransactionByHash", params: {hash: thash}}))
+                this.$socket.onmessage = (data) => {
+                    console.log(JSON.parse(data.data))
+
+                    let parsedData;
+
+                    parsedData = JSON.parse(data.data);
+                    parsedData.id = `ws${parsedData.id}`
+                    commit('setTransactionInfo', parsedData)
+                }
+            } else {
+                axios.get(`${process.env.VUE_APP_REST_API_URL}/transactions/hash/${hash}`)
                 .then(response => {
                     console.log(response.data.result);
                     commit('setTransactionInfo', response.data)
                 })
+            }
         },
     }
-}
 
 // const actions = {
 
